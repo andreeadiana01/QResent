@@ -2,6 +2,11 @@
 
 ## Introducere
 
+QResent reprezinta o aplicatie web ce faciliteaza verificarea prezenței în cadrul orelor fizice și online și centralizarea într-un mod unitar al acestor prezențe.
+In cadrul acestui proiect se vor implementa diferite functionalitati: export al listei de prezență,  generarea de coduri QR pentru a verifica prezența,
+configurarea materiei, setarea intervalelor de activitate, etc. Aplicatia este utila pentru digitalizarea sistemului de prezență în format fizic, dar si pentru
+activitatile din mediul online. Mai multe informatii sunt afisate pe pagina proiectului: https://ocw.cs.pub.ro/courses/mps/proiect/proiect-1
+
 ## Membrii echipei
 
 * **Andreea-Diana Ciocaianu** (342C2) - Project Manager
