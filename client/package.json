@@ -15,6 +15,7 @@
     "react-dom": "16.13.1",
     "react-router": "5.2.0",
     "react-router-dom": "5.2.0",
+    "sass": "^1.43.4",
     "webpack": "4.44.2"
   },
   "scripts": {

@@ -1,26 +1,25 @@
-import logo from './logo.svg';
 import React from 'react';
-import './App.css';
+import { BrowserRouter as Router, Switch } from 'react-router-dom';
+import Authentication from './components/authentication/Authentication';
+import AuthenticatedRoute from './auth/AuthenticatedRoute';
+import ResetPassword from './components/authentication/ResetPassword';
+import ActivateAccount from './components/authentication/ActivateAccount';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const App = () => {
+    return (
+        <Router>
+            <Switch>
+                <AuthenticatedRoute path="/register" exact
+                                    component={(props) => <Authentication {...props} form="register" />} />
+                <AuthenticatedRoute path="/" exact
+                                    component={(props) => <Authentication {...props} form="login" />} />
+
+                <AuthenticatedRoute path="/activate/:activationToken" component={ActivateAccount} />
+
+                <AuthenticatedRoute path="/reset/:resetToken" component={ResetPassword} />
+            </Switch>
+        </Router>
+    );
+};
 
 export default App;
