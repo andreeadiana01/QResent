@@ -1,5 +1,8 @@
 import axios from 'axios';
 
+/**
+ * Add user data to local storage or session storage
+ */
 export const authenticate = (data, next) => {
     const storage = data.remember ? window.localStorage : window.sessionStorage;
 
@@ -9,17 +12,23 @@ export const authenticate = (data, next) => {
     }
 };
 
-export const updateAuth = (avatar, next) => {
+/**
+ * Reauthenticate user
+ */
+export const updateAuth = (next) => {
     const data = isAuthenticated();
 
     if (!data) {
         return;
     }
 
-    data.user.avatar = avatar;
     authenticate(data, next);
 };
 
+/**
+ * Log user out and remove the data stored in browser memory
+ * @param next - a callback that executes after logout
+ */
 export const signOut = (next) => {
     if (typeof window !== 'undefined') {
         const token = isAuthenticated().token;
@@ -46,6 +55,10 @@ export const signOut = (next) => {
     }
 };
 
+/**
+ * Check if the user is authenticated
+ * @returns JWT token stored in browser memory | false if not authenticated
+ */
 export const isAuthenticated = () => {
     if (localStorage.getItem('jwt')) {
         return JSON.parse(localStorage.getItem('jwt'));

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
-import { isAuthenticated } from './index';
+import { isAuthenticated } from '../../auth';
 
 const AuthenticatedRoute = ({ component: Component, ...rest }) => (
     <Route {...rest} render={props => !isAuthenticated() ? (

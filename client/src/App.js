@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch } from 'react-router-dom';
 import Authentication from './components/authentication/Authentication';
-import AuthenticatedRoute from './auth/AuthenticatedRoute';
+import AuthenticatedRoute from './components/authentication/AuthenticatedRoute';
 import ResetPassword from './components/authentication/ResetPassword';
 import ActivateAccount from './components/authentication/ActivateAccount';
 
@@ -9,10 +9,8 @@ const App = () => {
     return (
         <Router>
             <Switch>
-                <AuthenticatedRoute path="/register" exact
-                                    component={(props) => <Authentication {...props} form="register" />} />
                 <AuthenticatedRoute path="/" exact
-                                    component={(props) => <Authentication {...props} form="login" />} />
+                                    component={(props) => <Authentication {...props} form='login'/>} />
 
                 <AuthenticatedRoute path="/activate/:activationToken" component={ActivateAccount} />
 

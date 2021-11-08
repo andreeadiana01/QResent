@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { Button, Checkbox, Form, message } from 'antd';
-import { shuffle } from 'lodash';
 import { authenticate } from '../../auth';
 import EmailField from './inputs/EmailField';
 import PasswordField from './inputs/PasswordField';
@@ -25,15 +24,12 @@ const AuthenticationForm = (props) => {
         setModalVisibility(!modalVisibility);
     };
 
-    const avatars = [ 'bear', 'cat', 'elephant', 'giraffe', 'horse', 'koala', 'lion', 'panda', 'panther',
-        'rhinoceros', 'tiger', 'zebra' ];
-
+    /**
+     * Register or login call to server
+     * @param values - values inserted in the input fields
+     */
     const auth = (values) => {
         setLoading(true);
-
-        if (props.type === 'register') {
-            values.avatar = shuffle(avatars)[0];
-        }
 
         const data = JSON.stringify(values);
         const config = {
@@ -59,19 +55,6 @@ const AuthenticationForm = (props) => {
             .catch(err => handleError(err));
     };
 
-    const resendActivationLink = () => {
-        setLoading(true);
-
-        axios.post('/api/auth/resend', { email: props.form.getFieldValue('email') })
-            .then(response => {
-                if (response.status === 200) {
-                    message.success('An activation link has been sent to your email address!');
-                    setLoading(false);
-                }
-            })
-            .catch(err => handleError(err));
-    };
-
     const handleError = (err) => {
         props.form.resetFields([ 'password' ]);
         setLoading(false);
@@ -81,7 +64,7 @@ const AuthenticationForm = (props) => {
     return (
         <Form name={props.type} initialValues={{ remember: true }} onFinish={auth} form={props.form}>
             {props.type === 'register' && <FullNameField error={error} />}
-            <EmailField error={error} formType={props.type} resend={resendActivationLink} />
+            <EmailField error={error} formType={props.type} />
             <PasswordField error={error} formType={props.type} />
             {
                 props.type === 'login' &&
