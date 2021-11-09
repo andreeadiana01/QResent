@@ -6,6 +6,7 @@ const classesRouter = require('./routes/classes');
 const studentsRouter = require('./routes/students');
 const teachersRouter = require('./routes/teachers');
 const attendanceRouter = require('./routes/attendance');
+
 require('dotenv').config();
 
 const app = express();

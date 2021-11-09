@@ -19,7 +19,7 @@ const TeacherSchema = mongoose.Schema({
         required: true,
     },
     classes: {
-        type: [ mongoose.Schema.Types.ObjectId ],
+        type: [mongoose.Schema.Types.ObjectId],
         ref: 'Class',
         default: [],
     },
@@ -34,6 +34,10 @@ const TeacherSchema = mongoose.Schema({
     activationToken: {
         type: String,
         default: '',
+    },
+    isActive: {
+        type: Boolean,
+        default: false,
     },
 });
 
