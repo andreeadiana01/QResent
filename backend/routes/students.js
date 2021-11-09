@@ -7,12 +7,14 @@ const router = express.Router();
 
 router.get('/', (req, res) => {
     Student.find({})
+        .select('-password')
         .then(students => res.json(students))
         .catch(err => res.status(404).json(err));
 })
 
 router.get("/:id", (req, res) => {
     Student.findById(req.params.id)
+        .select('-password')
         .then(student => res.json(student))
         .catch(err => res.status(404).json(err));
 });
