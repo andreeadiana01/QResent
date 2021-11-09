@@ -8,6 +8,9 @@ require('dotenv').config({ path: __dirname + '/../.env' });
 const mailgunDomain = 'mailgun.re-chord.live';
 const mg = mailgun({ apiKey: process.env.MAILGUN_API_KEY, domain: mailgunDomain });
 
+/**
+ * Generate a jwt token and attach it to a cookie, along with other user data; send the cookie to the client
+ */
 const addToken = (user, res) => {
     jwt.sign({ id: user._id }, process.env.JWT_KEY, (err, token) => {
         if (err) {
@@ -20,19 +23,20 @@ const addToken = (user, res) => {
             user: {
                 _id: user._id,
                 email: user.email,
-                fullName: user.fullName,
-                avatar: user.avatar,
             },
             token,
         });
     });
 };
 
-const hashPassword = (user, password, res) => {
+/**
+ * Hash password and save it to the student document; send user data as response to the client
+ */
+const hashPassword = (student, password, res) => {
     bcrypt.hash(password, 10)
         .then(hash => {
-            user.password = hash;
-            user.save().then(updatedUser => addToken(updatedUser, res))
+            student.password = hash;
+            student.save().then(updatedUser => addToken(updatedUser, res))
                 .catch(err => res.status(400).json(err));
         })
         .catch(err => res.status(500).json({ message: err }));
@@ -69,4 +73,4 @@ const sendActivationEmail = (student, res) => {
         });
 };
 
-module.exports = { sendActivationEmail };
+module.exports = { sendActivationEmail, hashPassword };
