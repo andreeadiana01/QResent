@@ -1,5 +1,8 @@
 #background {
-  background-image: url('../assets/images/background.svg');
+  background-image: url('../assets/images/politehnica.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
   position: fixed;
   width: 100%;
   height: 100%;
@@ -27,7 +30,8 @@
     justify-content: center;
 
     #illustration {
-      height: 80%;
+            width: 500px;
+            height: auto;
     }
   }
 
