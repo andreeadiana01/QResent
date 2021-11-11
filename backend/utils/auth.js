@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const mailgun = require('mailgun-js');
+const validator = require('email-validator');
 const Student = require('../models/Student');
 
 require('dotenv').config({ path: __dirname + '/../.env' });
@@ -73,4 +74,34 @@ const sendActivationEmail = (student, res) => {
         });
 };
 
-module.exports = { sendActivationEmail, hashPassword };
+const passwordValidator = (password) => {
+    const regex = new RegExp('^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|' +
+        '((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})');
+    return (regex.test(password));
+};
+
+const emailValidator = (email) => {
+    return validator.validate(email);
+};
+
+const nameValidator = (fullName) => {
+    const regex = new RegExp('^[a-zA-Z -]{3,30}$');
+    return regex.test(fullName);
+};
+
+const credentialsValidator = ({ email, firstName, lastName, password }) => {
+    if (!emailValidator(email)) {
+        throw new Error('Invalid email!');
+    }
+
+    if (!passwordValidator(password)) {
+        throw new Error('The password must be at least 6 characters long and contain a combination of letters, ' +
+            'numbers and special characters!');
+    }
+
+    if (!nameValidator(firstName) || !nameValidator(lastName)) {
+        throw new Error('The name should only contain letters, spaces and dashes.');
+    }
+};
+
+module.exports = { sendActivationEmail, hashPassword, credentialsValidator, emailValidator, addToken };

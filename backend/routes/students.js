@@ -1,7 +1,8 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const Student = require('../models/Student');
-const { sendActivationEmail, hashPassword } = require('../utils/auth');
+const bcrypt = require('bcrypt');
+const { sendActivationEmail, hashPassword, credentialsValidator, emailValidator, addToken } = require('../utils/auth');
 
 const router = express.Router();
 
@@ -24,6 +25,12 @@ router.post('/add', (req, res) => {
 
     const newStudent = new Student({ email, firstName, lastName, password });
 
+    try {
+        credentialsValidator(req.body);
+    } catch (err) {
+        return res.status(400).json(err.message);
+    }
+
     newStudent.save()
         .then(() => sendActivationEmail(newStudent, res))
         .catch(err => res.status(400).json(err));
@@ -43,7 +50,7 @@ router.post('/activate', (req, res) => {
 
         Student.findOne({ activationToken })
             .then(student => {
-                if (!student) {
+                if (!student || student.isActive) {
                     return res.status(400).json('This account is active or the token is invalid!');
                 }
 
@@ -51,6 +58,32 @@ router.post('/activate', (req, res) => {
                 student.isActive = true;
                 hashPassword(student, password, res);
             });
+    });
+});
+
+router.post('/login', (req, res) => {
+    if (!emailValidator(req.body.email)) {
+        return res.status(400).json('Invalid email!');
+    }
+
+    Student.findOne({ email: req.body.email }).then(student => {
+        if (!student) {
+            return res.status(404).json({ message: 'Student does not exist!', source: 'email' });
+        }
+
+        if (!student.isActive) {
+            return res.status(403).json({ message: 'Your account is not activated!', source: 'activation' });
+        }
+
+        bcrypt.compare(req.body.password, student.password)
+            .then(isMatch => {
+                if (!isMatch) {
+                    return res.status(400).json({ message: 'Password is incorrect!', source: 'password' });
+                }
+
+                addToken(student, res);
+            })
+            .catch(err => res.status(500).json({ message: err }));
     });
 });
 
