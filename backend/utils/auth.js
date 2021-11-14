@@ -21,6 +21,8 @@ const addToken = (user, res) => {
             user: {
                 _id: user._id,
                 email: user.email,
+                firstName: user.firstName,
+                lastName: user.lastName,
             },
             token,
         });
@@ -35,7 +37,7 @@ const hashPassword = (user, password, res, next) => {
         .then(hash => {
             user.password = hash;
             user.save().then(() => next())
-                .catch(err => res.status(400).json(err));
+                .catch(err => res.status(500).send(err));
         })
         .catch(err => res.status(500).json({ message: err }));
 };
@@ -45,6 +47,7 @@ const hashPassword = (user, password, res, next) => {
  */
 const sendActivationEmail = (user, res) => {
     const token = jwt.sign({ email: user.email }, process.env.EMAIL_VALIDATION_KEY);
+
     const data = {
         from: 'QResent <noreply@qresent.org>',
         to: user.email,

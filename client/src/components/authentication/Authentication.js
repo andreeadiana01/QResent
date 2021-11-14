@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Form, Tabs } from 'antd';
 import '../../styles/authentication.scss';
 import AuthenticationForm from './AuthenticationForm';
+import logoUpb from '../../assets/images/logo-upb.png'
+import logoQresent from '../../assets/images/qresent-logo.svg'
 
 const { TabPane } = Tabs;
 
@@ -32,12 +34,12 @@ const Authentication = (props) => {
         <div id="background">
             <div id="container">
                 <div id="illustration-container">
-                    <img id="illustration" src={require('../../assets/images/login-illustration.svg')}
+                    <img id="illustration" src={logoUpb}
                          alt="login-illustration" />
                 </div>
 
                 <div id="authentication-container">
-                    <img id="logo" src={require('../../assets/images/logos/logo-black.svg')} alt="logo.svg" />
+                    <img id="logo" src={logoQresent} alt="logo.svg" />
 
                     <div id="tabs">
                         <Tabs size="large" activeKey={activeTab} onTabClick={changeActiveTab} centered animated>
