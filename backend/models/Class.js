@@ -11,7 +11,7 @@ const ClassSchema = mongoose.Schema({
     },
     teacher: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Teacher',
+        ref: 'User',
         require: true,
     },
     grading: {

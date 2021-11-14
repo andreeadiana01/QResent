@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 
 const classesRouter = require('./routes/classes');
+const authRouter = require('./routes/auth');
 const studentsRouter = require('./routes/students');
 const teachersRouter = require('./routes/teachers');
 const attendanceRouter = require('./routes/attendance');
@@ -27,6 +28,7 @@ mongoose.connect(mongoUri, {
     .catch(err => console.log(err));
 
 app.use('/api/students', studentsRouter);
+app.use('/api/auth', authRouter);
 app.use('/api/teachers', teachersRouter);
 app.use('/api/classes', classesRouter);
 app.use('/api/attendance', attendanceRouter);

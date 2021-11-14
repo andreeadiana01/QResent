@@ -1,13 +1,10 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const mailgun = require('mailgun-js');
 const validator = require('email-validator');
-const Student = require('../models/Student');
+const User = require('../models/User');
+const nodemailer = require("nodemailer");
 
 require('dotenv').config({ path: __dirname + '/../.env' });
-
-const mailgunDomain = 'mailgun.re-chord.live';
-const mg = mailgun({ apiKey: process.env.MAILGUN_API_KEY, domain: mailgunDomain });
 
 /**
  * Generate a jwt token and attach it to a cookie, along with other user data; send the cookie to the client
@@ -15,7 +12,7 @@ const mg = mailgun({ apiKey: process.env.MAILGUN_API_KEY, domain: mailgunDomain 
 const addToken = (user, res) => {
     jwt.sign({ id: user._id }, process.env.JWT_KEY, (err, token) => {
         if (err) {
-            res.status(404).json(err);
+            return res.status(404).json(err);
         }
 
         res.cookie('t', token);
@@ -33,11 +30,11 @@ const addToken = (user, res) => {
 /**
  * Hash password and save it to the student document; send user data as response to the client
  */
-const hashPassword = (student, password, res) => {
+const hashPassword = (user, password, res, next) => {
     bcrypt.hash(password, 10)
         .then(hash => {
-            student.password = hash;
-            student.save().then(updatedUser => addToken(updatedUser, res))
+            user.password = hash;
+            user.save().then(() => next())
                 .catch(err => res.status(400).json(err));
         })
         .catch(err => res.status(500).json({ message: err }));
@@ -46,11 +43,11 @@ const hashPassword = (student, password, res) => {
 /**
  * Generate a token by encrypting the user email, then build and send an activation email
  */
-const sendActivationEmail = (student, res) => {
-    const token = jwt.sign({ email: student.email }, process.env.EMAIL_VALIDATION_KEY);
+const sendActivationEmail = (user, res) => {
+    const token = jwt.sign({ email: user.email }, process.env.EMAIL_VALIDATION_KEY);
     const data = {
         from: 'QResent <noreply@qresent.org>',
-        to: student.email,
+        to: user.email,
         subject: 'Activate Your QResent Account',
         html: `
             <h3>Please click on the following link to activate your QResent account:</h3>
@@ -58,18 +55,26 @@ const sendActivationEmail = (student, res) => {
         `,
     };
 
-    student.activationToken = token;
-    student.save()
+    user.activationToken = token;
+
+    const transporter = nodemailer.createTransport({
+        host: "smtp.gmail.com",
+        port: 587,
+        secure: false,
+        auth: {
+            user: "qresent.upb@gmail.com",
+            pass: process.env.EMAIL_PASSWORD,
+        },
+    });
+
+    user.save()
         .then(() => {
-            mg.messages().send(data)
+            transporter.sendMail(data)
                 .then(() => res.json('An activation link has been sent to your email address!'))
                 .catch(() => {
-                    Student.deleteOne({ email: student.email })
+                    User.deleteOne({ email: user.email })
                         .then(() => res.status(400).json('Email address is invalid!'))
-                        .catch(err => {
-                            Student.deleteOne({ email: student.email })
-                                .then(() => res.status(500).json('Email address is invalid!'));
-                        });
+                        .catch(err => res.status(500).json(err));
                 });
         });
 };
