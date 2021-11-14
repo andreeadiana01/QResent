@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
+require('dotenv').config({ path: __dirname + '/../.env' });
 
-const StudentSchema = new mongoose.Schema({
+const UserSchema = new mongoose.Schema({
     email: {
         type: String,
         required: true,
@@ -16,8 +17,13 @@ const StudentSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        default: '12345',
+        default: process.env.DEFAULT_PASSWORD,
         required: true,
+    },
+    role: {
+        type: [String],
+        enum: ['STUDENT', 'TEACHER', 'ADMIN'],
+        default: 'STUDENT',
     },
     classes: {
         type: [{
@@ -26,6 +32,7 @@ const StudentSchema = new mongoose.Schema({
         }],
         ref: 'Class',
         default: [],
+        id: false,
     },
     resetToken: {
         type: String,
@@ -41,6 +48,6 @@ const StudentSchema = new mongoose.Schema({
     },
 });
 
-const Student = mongoose.model('Student', StudentSchema);
+const User = mongoose.model('User', UserSchema);
 
-module.exports = Student;
+module.exports = User;
