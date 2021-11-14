@@ -10,6 +10,7 @@ import {
   FileOutlined,
 } from '@ant-design/icons';
 
+
 const { Header, Sider, Content } = Layout;
 
 class MainMenu extends React.Component {
@@ -24,13 +25,14 @@ class MainMenu extends React.Component {
   };
 
   render() {
+
     return (
       <Layout>
         <Sider trigger={null} collapsible collapsed={this.state.collapsed}>
           <div className="logo" />
           <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
             <Menu.Item key="1" icon={<FileOutlined />}>
-            Administration 
+            Administration
             </Menu.Item>
             <Menu.Item key="2" icon={<CalendarOutlined />}>
             My classes
@@ -38,7 +40,7 @@ class MainMenu extends React.Component {
           </Menu>
         </Sider>
         <Layout className="site-layout">
-          <Header className="site-layout-background" style={{ padding: 0 }}>
+          <Header className="site-layout-background" style={{ padding: 10 }}>
             {React.createElement(this.state.collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
               className: 'trigger',
               onClick: this.toggle,
@@ -49,7 +51,7 @@ class MainMenu extends React.Component {
             style={{
               margin: '24px 16px',
               padding: 54,
-              minHeight: 600,
+              minHeight: window.innerHeight - 50,
             }}
           >
             Content
