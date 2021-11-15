@@ -4,7 +4,7 @@ import { MailOutlined } from '@ant-design/icons';
 
 const EmailField = (props) => {
 
-    const [ validationState, setValidationState ] = useState({
+    const [validationState, setValidationState] = useState({
         validateStatus: undefined,
         help: null,
     });
@@ -18,15 +18,11 @@ const EmailField = (props) => {
             setValidationState({
                 validateStatus: 'error',
 
-                help: <span>Your account hasn't been activated! Please confirm your email address
-                    or <Button type="link" onClick={props.resend}>
-                        <u>request another confirmation link</u>.
-                    </Button>
-                </span>,
+                help: <span>Your account hasn't been activated! Please confirm your email address.</span>,
             });
         }
         //eslint-disable-next-line
-    }, [ props.error.source, props.error.message ]);
+    }, [props.error.source, props.error.message]);
 
     const removeValidationState = () => {
         setValidationState({
@@ -49,11 +45,11 @@ const EmailField = (props) => {
         <Form.Item
             name="email"
             hasFeedback={props.formType === 'register'}
-            rules={[ requiredRule, patternRule ]}
+            rules={[requiredRule, patternRule]}
             validateStatus={validationState.validateStatus}
             help={validationState.help}>
-            <Input size="large" prefix={<MailOutlined className="site-form-item-icon" />} placeholder=" Email"
-                   onChange={removeValidationState} />
+            <Input size="large" prefix={<MailOutlined className="site-form-item-icon"/>} placeholder=" Email"
+                   onChange={removeValidationState}/>
         </Form.Item>
     );
 };

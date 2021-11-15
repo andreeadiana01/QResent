@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
-import { Table, Input, InputNumber, Popconfirm, Form, Typography, Spin } from 'antd';
+import { Table, Input, InputNumber, Popconfirm, Form, Typography, Spin, Button } from 'antd';
+import AddStudentModal from "./AddStudentModal";
+import '../../constants';
+import { departments, years, grades } from "../../constants";
 
 const originData = [];
 let loading = false;
@@ -8,8 +11,9 @@ for (let i = 0; i < 100; i++) {
     originData.push({
         key: i.toString(),
         name: `Edrward ${i}`,
-        age: 32,
-        address: `London Park no. ${i}`,
+        year: `Licenta-${i % 4 + 1}`,
+        department: i % 2 ? 'CTI-ACS' : 'IS-ACS',
+        grade: '344CC'
     });
 }
 
@@ -54,6 +58,7 @@ const StudentsTable = () => {
     const [editingKey, setEditingKey] = useState('');
 
     const isEditing = (record) => record.key === editingKey;
+    const [ modalVisibility, setModalVisibility ] = useState(false);
 
     const edit = (record) => {
         form.setFieldsValue({
@@ -64,6 +69,10 @@ const StudentsTable = () => {
         });
         setEditingKey(record.key);
     };
+
+    const toggleModalVisibility = () => {
+        setModalVisibility(!modalVisibility);
+    }
 
     const cancel = () => {
         setEditingKey('');
@@ -92,32 +101,55 @@ const StudentsTable = () => {
 
     const columns = [
         {
-            title: 'name',
+            title: 'Name',
             dataIndex: 'name',
             width: '25%',
             editable: true,
+            sorter: (a, b) => a.name.localeCompare(b.name),
+            sortDirections: ['ascend'],
         },
         {
-            title: 'age',
-            dataIndex: 'age',
-            width: '15%',
+            title: 'Department',
+            dataIndex: 'department',
+            width: '10%',
+            editable: true,
+            filters: departments.map((department) => ({ text: department, value: department })),
+            sorter: (a, b) => a.department.localeCompare(b.department),
+            onFilter: (value, record) => record.department === value
+        },
+        {
+            title: 'Year',
+            dataIndex: 'year',
+            width: '10%',
+            editable: true,
+            filters: years.map((year) => ({ text: year, value: year })),
+            sorter: (a, b) => a.year - b.year,
+            onFilter: (value, record) => record.year === value
+        },
+        {
+            title: 'Grade',
+            dataIndex: 'grade',
+            width: '10%',
+            editable: true,
+            filters: grades.map((grade) => ({ text: grade, value: grade })),
+            sorter: (a, b) => a.grade.localeCompare(b.grade),
+            onFilter: (value, record) => record.grade === value
+        },
+        {
+            title: 'Email',
+            dataIndex: 'email',
+            width: '20%',
             editable: true,
         },
         {
-            title: 'address',
-            dataIndex: 'address',
-            width: '40%',
-            editable: true,
-        },
-        {
-            title: 'operation',
+            title: '',
             dataIndex: 'operation',
             render: (_, record) => {
                 const editable = isEditing(record);
                 return editable ? (
                     <span>
             <a
-                href="javascript:;"
+                href="javascript:"
                 onClick={() => save(record.key)}
                 style={{
                     marginRight: 8,
@@ -146,7 +178,7 @@ const StudentsTable = () => {
             ...col,
             onCell: (record) => ({
                 record,
-                inputType: col.dataIndex === 'age' ? 'number' : 'text',
+                inputType: 'text',
                 dataIndex: col.dataIndex,
                 title: col.title,
                 editing: isEditing(record),
@@ -155,27 +187,40 @@ const StudentsTable = () => {
     });
     return (
         <div id="content">
-        {
-            loading ?
-                <Spin size="large"/> :
-                <Form form={form} component={false}>
-                    <Table
-                        components={{
-                            body: {
-                                cell: EditableCell,
-                            },
-                        }}
-                        bordered
-                        dataSource={data}
-                        columns={mergedColumns}
-                        rowClassName="editable-row"
-                        pagination={{
-                            onChange: cancel,
-                            defaultPageSize: 20,
-                        }}
-                    />
-                </Form>
-        }
+            {
+                loading ?
+                    <Spin size="large"/> :
+                    <div>
+                        <Button
+                            onClick={toggleModalVisibility}
+                            type="primary"
+                            style={{
+                                marginBottom: 16,
+                            }}
+                        >
+                            Add a row
+                        </Button>
+                        <Form form={form} component={false}>
+                            <Table
+                                components={{
+                                    body: {
+                                        cell: EditableCell,
+                                    },
+                                }}
+                                bordered
+                                dataSource={data}
+                                columns={mergedColumns}
+                                rowClassName="editable-row"
+                                pagination={{
+                                    onChange: cancel,
+                                    defaultPageSize: 20,
+                                }}
+                            />
+                        </Form>
+
+                        <AddStudentModal visible={modalVisibility} toggleModalVisibility={toggleModalVisibility} />
+                    </div>
+            }
         </div>
     );
 };
