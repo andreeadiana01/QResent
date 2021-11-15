@@ -23,10 +23,14 @@ const addToken = (user, res) => {
                 email: user.email,
                 firstName: user.firstName,
                 lastName: user.lastName,
+                role: user.role,
+                isAdmin: user.isAdmin,
             },
             token,
         });
     });
+
+    return {};
 };
 
 /**

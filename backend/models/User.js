@@ -24,7 +24,7 @@ const UserSchema = new mongoose.Schema({
     },
     department: {
         type: String,
-        enum: ['CTI', 'IS'],
+        enum: ['CTI-ACS', 'IS-ACS'],
     },
     password: {
         type: String,
@@ -33,8 +33,12 @@ const UserSchema = new mongoose.Schema({
     },
     role: {
         type: [String],
-        enum: ['STUDENT', 'TEACHER', 'ADMIN'],
+        enum: ['STUDENT', 'TEACHER'],
         default: 'STUDENT',
+    },
+    isAdmin: {
+        type: Boolean,
+        default: false,
     },
     classes: {
         type: [{

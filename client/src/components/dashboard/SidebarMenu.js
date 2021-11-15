@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Menu } from 'antd';
+import { isAuthenticated } from "../../auth";
 
 const { SubMenu } = Menu;
 import {
@@ -36,17 +37,20 @@ const SidebarMenu = () => {
                 Dashboard
             </Menu.Item>
 
-            <SubMenu key="admin" icon={<ToolOutlined />} title="Administration">
-                <Menu.Item key="admin-students" icon={<TeamOutlined/>}>
-                    <Link to="/admin/students"/>
-                    Students
-                </Menu.Item>
+            {
+                isAuthenticated().user.isAdmin &&
+                <SubMenu key="admin" icon={<ToolOutlined/>} title="Administration">
+                    <Menu.Item key="admin-students" icon={<TeamOutlined/>}>
+                        <Link to="/admin/students"/>
+                        Students
+                    </Menu.Item>
 
-                <Menu.Item key="admin-classes" icon={<ReadOutlined/>}>
-                    <Link to="/admin/classes"/>
-                    Classes
-                </Menu.Item>
-            </SubMenu>
+                    <Menu.Item key="admin-classes" icon={<ReadOutlined/>}>
+                        <Link to="/admin/classes"/>
+                        Classes
+                    </Menu.Item>
+                </SubMenu>
+            }
 
             <Menu.Item key="classes" icon={<BookOutlined/>}>
                 <Link to="/classes"/>

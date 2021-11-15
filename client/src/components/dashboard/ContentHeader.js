@@ -14,8 +14,6 @@ const ContentHeader = (props) => {
         },
     ];
 
-    console.log(routes)
-
     const itemRender = (route, params, routes, paths) => {
         const last = routes.indexOf(route) === routes.length - 1;
 

@@ -1,21 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Table, Input, InputNumber, Popconfirm, Form, Typography, Spin, Button } from 'antd';
 import AddStudentModal from "./AddStudentModal";
 import '../../constants';
 import { departments, years, grades } from "../../constants";
-
-const originData = [];
-let loading = false;
-
-for (let i = 0; i < 100; i++) {
-    originData.push({
-        key: i.toString(),
-        name: `Edrward ${i}`,
-        year: `Licenta-${i % 4 + 1}`,
-        department: i % 2 ? 'CTI-ACS' : 'IS-ACS',
-        grade: '344CC'
-    });
-}
+import axios from "axios";
 
 const EditableCell = ({
                           editing,
@@ -54,11 +42,21 @@ const EditableCell = ({
 
 const StudentsTable = () => {
     const [form] = Form.useForm();
-    const [data, setData] = useState(originData);
     const [editingKey, setEditingKey] = useState('');
+    const [loading, setLoading] = useState(true);
+    const [students, setStudents] = useState([]);
+    const [data, setData] = useState(students);
+
+    useEffect(() => {
+        axios.get('/api/students', { headers: { 'Content-Type': 'application/json' } })
+            .then((response) => {
+                setLoading(false);
+                setStudents(response.data);
+            });
+    }, []);
 
     const isEditing = (record) => record.key === editingKey;
-    const [ modalVisibility, setModalVisibility ] = useState(false);
+    const [modalVisibility, setModalVisibility] = useState(false);
 
     const edit = (record) => {
         form.setFieldsValue({
@@ -169,6 +167,7 @@ const StudentsTable = () => {
             },
         },
     ];
+
     const mergedColumns = columns.map((col) => {
         if (!col.editable) {
             return col;
@@ -185,6 +184,21 @@ const StudentsTable = () => {
             }),
         };
     });
+
+    const handleAdd = () => {
+        const { count, dataSource } = this.state;
+        const newData = {
+            key: count,
+            name: `Edward King ${count}`,
+            age: '32',
+            address: `London, Park Lane no. ${count}`,
+        };
+        this.setState({
+            dataSource: [...dataSource, newData],
+            count: count + 1,
+        });
+    };
+
     return (
         <div id="content">
             {
@@ -208,7 +222,7 @@ const StudentsTable = () => {
                                     },
                                 }}
                                 bordered
-                                dataSource={data}
+                                dataSource={students}
                                 columns={mergedColumns}
                                 rowClassName="editable-row"
                                 pagination={{
@@ -218,7 +232,8 @@ const StudentsTable = () => {
                             />
                         </Form>
 
-                        <AddStudentModal visible={modalVisibility} toggleModalVisibility={toggleModalVisibility} />
+                        <AddStudentModal visible={modalVisibility} toggleModalVisibility={toggleModalVisibility}
+                                         onOk={handleAdd}/>
                     </div>
             }
         </div>

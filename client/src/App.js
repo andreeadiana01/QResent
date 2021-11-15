@@ -5,7 +5,7 @@ import AuthenticatedRoute from './components/authentication/AuthenticatedRoute';
 import ResetPassword from './components/authentication/ResetPassword';
 import ActivateAccount from './components/authentication/ActivateAccount';
 import PrivateRoute from "./components/authentication/PrivateRoute";
-import Dashboard from "./components/mainMenu/Dashboard";
+import Dashboard from "./components/dashboard/Dashboard";
 
 const App = () => {
     return (
