@@ -15,6 +15,17 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    grade: {
+        type: String,
+    },
+    year: {
+        type: String,
+        enum: ['Licenta-1', 'Licenta-2', 'Licenta-3', 'Licenta-4', 'Master-1', 'Master-2'],
+    },
+    department: {
+        type: String,
+        enum: ['CTI-ACS', 'IS-ACS'],
+    },
     password: {
         type: String,
         default: process.env.DEFAULT_PASSWORD,
@@ -22,8 +33,12 @@ const UserSchema = new mongoose.Schema({
     },
     role: {
         type: [String],
-        enum: ['STUDENT', 'TEACHER', 'ADMIN'],
+        enum: ['STUDENT', 'TEACHER'],
         default: 'STUDENT',
+    },
+    isAdmin: {
+        type: Boolean,
+        default: false,
     },
     classes: {
         type: [{

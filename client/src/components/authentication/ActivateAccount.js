@@ -8,23 +8,27 @@ const ActivateAccount = () => {
 
     const { activationToken } = useParams();
     const history = useHistory();
+    const data = {
+        activationToken: activationToken,
+        // TODO
+        password: "Test12345!"
+    };
 
     useEffect(() => {
-        axios.post('/api/auth/activate', { activationToken })
+        axios.post('/api/auth/activate', data)
             .then(response => {
                 if (response.status === 200) {
                     message.success('Account successfully activated!');
-                    history.push('/login');
+                    history.push('/');
                 }
             })
-            .catch(err => {
-                history.push('/register');
-                message.error(err.response.data);
+            .catch((err) => {
+                console.log(err);
             });
     });
 
     return (
-        <div />
+        <div/>
     );
 };
 

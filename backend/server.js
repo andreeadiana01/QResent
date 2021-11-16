@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
 
 const classesRouter = require('./routes/classes');
 const authRouter = require('./routes/auth');
@@ -13,8 +14,9 @@ require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 5000;
 
-app.use(express.json());
+app.use(bodyParser.json());
 app.use(cookieParser());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 /* Open connection to Mongo Atlas */
 const mongoUri = process.env.MONGO_URI;
