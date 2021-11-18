@@ -1,5 +1,6 @@
 const express = require('express');
 const User = require("../models/User");
+const Class = require("../models/Class");
 const { hashPassword, addToken, emailValidator } = require("../utils/auth");
 
 const router = express.Router();
@@ -33,5 +34,19 @@ router.get("/:id", (req, res) => {
         .then(teacher => res.json(teacher))
         .catch(err => res.status(404).json(err));
 });
+
+router.get("/:id/classes", (req, res) => {
+    Class.find({teacher : req.params.id})
+        .then(classes => res.json(classes))
+        .catch(err => res.status(404).json(err));
+});
+
+// router.put("/:id", (req, res) => {
+//     const teacher = new User(req.body);
+
+//     teacher.update()
+//         .then(() => res.status(204).json('Class assigned!'))
+//         .catch(err => res.status(400).json(err));
+// });
 
 module.exports = router;
