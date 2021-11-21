@@ -27,8 +27,6 @@ const Dashboard = () => {
                            render={(props) => <ContentContainer {...props} title="Manage students" />} />
                     <Route exact path="/admin/classes"
                            render={(props) => <ContentContainer {...props} title="Manage classes" />} />
-                    <Route exact path="/classes"
-                           render={(props) => <ContentContainer {...props} title="Classes" />} />
                     <Route exact path="/settings"
                            render={(props) => <ContentContainer {...props} title="Settings" />} />
                 </Layout>
