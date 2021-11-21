@@ -200,7 +200,7 @@ const StudentsTable = () => {
     };
 
     return (
-        <div id="content">
+        <div className="content" id="students-table">
             {
                 loading ?
                     <Spin size="large"/> :

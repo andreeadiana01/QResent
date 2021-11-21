@@ -77,13 +77,16 @@
     height: 100%;
   }
 
-  #content {
+  .content {
     display: flex;
-    flex-direction: column;
     padding: 1.5rem;
     height: 100%;
     flex: 0 1 auto;
     background: #ffffff;
+
+    #students-table {
+      flex-direction: column;
+    }
 
     .ant-spin, .ant-empty {
       margin: auto;
@@ -91,8 +94,18 @@
   }
 }
 
-.albums-container {
+#classes {
+  display: flex;
+  flex-direction: row;
+  padding: 1.5rem;
+  height: 100%;
+  flex: 0 1 auto;
+  background: #ffffff;
+}
+
+#classes-container {
   display: grid;
+  grid-template-columns: repeat(3, 1fr);
   grid-gap: 2rem 1rem;
   justify-content: center;
   justify-self: center;
