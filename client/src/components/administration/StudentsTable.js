@@ -5,31 +5,18 @@ import '../../constants';
 import { departments, years, grades } from "../../constants";
 import axios from "axios";
 
-const EditableCell = ({
-                          editing,
-                          dataIndex,
-                          title,
-                          inputType,
-                          record,
-                          index,
-                          children,
-                          ...restProps
-                      }) => {
+const EditableCell = ({ editing, dataIndex, title, inputType, record, index, children, ...restProps }) => {
     const inputNode = inputType === 'number' ? <InputNumber/> : <Input/>;
     return (
         <td {...restProps}>
             {editing ? (
-                <Form.Item
-                    name={dataIndex}
-                    style={{
-                        margin: 0,
-                    }}
-                    rules={[
-                        {
-                            required: true,
-                            message: `Please Input ${title}!`,
-                        },
-                    ]}
+                <Form.Item name={dataIndex} style={{ margin: 0, }}
+                           rules={[
+                               {
+                                   required: true,
+                                   message: `Please Input ${title}!`,
+                               },
+                           ]}
                 >
                     {inputNode}
                 </Form.Item>
@@ -97,12 +84,16 @@ const StudentsTable = () => {
         }
     };
 
+    function deleteStudent(record) {
+
+    }
+
     const columns = [
         {
             title: 'Name',
-            dataIndex: 'name',
+            dataIndex: 'fullName',
             width: '25%',
-            editable: true,
+            editable: false,
             sorter: (a, b) => a.name.localeCompare(b.name),
             sortDirections: ['ascend'],
         },
@@ -137,7 +128,7 @@ const StudentsTable = () => {
             title: 'Email',
             dataIndex: 'email',
             width: '20%',
-            editable: true,
+            editable: false,
         },
         {
             title: '',
@@ -146,22 +137,33 @@ const StudentsTable = () => {
                 const editable = isEditing(record);
                 return editable ? (
                     <span>
-            <a
-                href="javascript:"
-                onClick={() => save(record.key)}
-                style={{
-                    marginRight: 8,
-                }}
-            >
-              Save
-            </a>
-            <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
-              <a>Cancel</a>
-            </Popconfirm>
-          </span>
+                        <a
+                            href="javascript:"
+                            onClick={() => save(record.key)}
+                            style={{
+                                marginRight: 8,
+                            }}
+                        >
+                          Save
+                        </a>
+                        <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
+                          <a>Cancel</a>
+                        </Popconfirm>
+                    </span>
                 ) : (
                     <Typography.Link disabled={editingKey !== ''} onClick={() => edit(record)}>
                         Edit
+                    </Typography.Link>
+                );
+            },
+        },
+        {
+            title: '',
+            dataIndex: 'operation',
+            render: (_, record) => {
+                return (
+                    <Typography.Link onClick={() => deleteStudent(record)}>
+                        Delete
                     </Typography.Link>
                 );
             },
@@ -200,17 +202,15 @@ const StudentsTable = () => {
     };
 
     return (
-        <div className="content" id="students-table">
+        <div className="content">
             {
                 loading ?
                     <Spin size="large"/> :
                     <div>
-                        <Button
-                            onClick={toggleModalVisibility}
-                            type="primary"
-                            style={{
-                                marginBottom: 16,
-                            }}
+                        <Button onClick={toggleModalVisibility} type="primary"
+                                style={{
+                                    marginBottom: 16,
+                                }}
                         >
                             Add a row
                         </Button>

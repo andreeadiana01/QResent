@@ -53,7 +53,7 @@ const Settings = () => {
                            prefix={<MailOutlined className="site-form-item-icon" />} />
 
                     <label>Full Name:</label>
-                    <Input size="large" value={user.firstName + " " + user.lastName}  disabled={true}
+                    <Input size="large" value={user.fullName}  disabled={true}
                            prefix={<UserOutlined className="site-form-item-icon" />} />
                 </div>
 

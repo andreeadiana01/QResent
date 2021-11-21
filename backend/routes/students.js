@@ -7,7 +7,7 @@ const { sendActivationEmail, hashPassword, credentialsValidator, emailValidator,
 const router = express.Router();
 
 router.get('/', (req, res) => {
-    User.find({role: 'STUDENT'})
+    User.find({ role: 'STUDENT' })
         .select('-password')
         .then(students => res.json(students))
         .catch(err => res.status(404).json(err));
@@ -21,9 +21,10 @@ router.get("/:id", (req, res) => {
 });
 
 router.post('/', (req, res) => {
-    const { email, firstName, lastName, password } = req.body;
+    const { email, firstName, lastName, department, year, grade } = req.body;
+    const fullName = `${firstName} ${lastName}`;
 
-    const student = new User({ email, firstName, lastName, password });
+    const student = new User({ email, fullName, department, year, grade });
 
     try {
         emailValidator(req.body);
@@ -35,9 +36,5 @@ router.post('/', (req, res) => {
         .then(() => sendActivationEmail(student, res))
         .catch(err => res.status(400).json(err));
 });
-
-
-
-
 
 module.exports = router;

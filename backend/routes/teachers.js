@@ -14,8 +14,9 @@ router.get('/', (req, res) => {
 
 router.post('/', (req, res) => {
     const { email, firstName, lastName, password, isAdmin } = req.body;
+    const fullName = `${firstName} ${lastName}`;
 
-    const teacher = new User({ email, firstName, lastName, password, isAdmin, role: 'TEACHER', isActive: true});
+    const teacher = new User({ email, fullName, password, isAdmin, role: 'TEACHER', isActive: true});
 
     try {
         emailValidator(req.body);

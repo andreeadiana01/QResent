@@ -49,7 +49,7 @@ const DashboardHeader = (props) => {
                     <div className="user centered">
                         <Avatar icon={<UserOutlined/>}/>
                         <Button style={{ fontSize: '1.2rem' }} type="link"
-                                size="large">{user.firstName} {user.lastName}</Button>
+                                size="large">{user.fullName}</Button>
                     </div>
                 </Cascader>
             </div>

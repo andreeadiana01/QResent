@@ -1,34 +1,55 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
+import { useHistory, useParams } from 'react-router-dom';
 import axios from 'axios';
-import { message } from 'antd';
-import { useParams } from 'react-router';
-import { useHistory } from 'react-router-dom';
+import { Form, message } from 'antd';
+import '../../styles/authentication.scss';
+import PasswordField from './inputs/PasswordField';
+import SubmitButton from './inputs/SubmitButton';
 
 const ActivateAccount = () => {
 
     const { activationToken } = useParams();
     const history = useHistory();
-    const data = {
-        activationToken: activationToken,
-        // TODO
-        password: "Test12345!"
-    };
 
-    useEffect(() => {
-        axios.post('/api/auth/activate', data)
+    const [ error, setError ] = useState({
+        message: '',
+        source: '',
+    });
+
+    const resetPassword = (values) => {
+        const data = {
+            password: values.password,
+            activationToken: activationToken,
+        };
+
+        axios.post('/api/auth/activate', data, { headers: { 'Content-Type': 'application/json' } })
             .then(response => {
                 if (response.status === 200) {
-                    message.success('Account successfully activated!');
+                    message.success('Password was successfully reset!');
                     history.push('/');
                 }
             })
-            .catch((err) => {
-                console.log(err);
+            .catch(err => {
+                setError(err.response.data);
+                message.error(err.response.data);
             });
-    });
+    };
 
     return (
-        <div/>
+        <div id="background">
+            <div id="reset-password">
+                <div id="password-container">
+                    <h1 className="form-title">Reset Password</h1>
+
+                    <p>Insert your new password below.</p>
+
+                    <Form onFinish={resetPassword}>
+                        <PasswordField formType="register" error={error} />
+                        <SubmitButton title="Reset Password" />
+                    </Form>
+                </div>
+            </div>
+        </div>
     );
 };
 

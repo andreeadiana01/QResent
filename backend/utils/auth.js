@@ -21,8 +21,7 @@ const addToken = (user, res) => {
             user: {
                 _id: user._id,
                 email: user.email,
-                firstName: user.firstName,
-                lastName: user.lastName,
+                fullName: user.fullName,
                 role: user.role,
                 isAdmin: user.isAdmin,
             },
@@ -101,7 +100,7 @@ const nameValidator = (fullName) => {
     return regex.test(fullName);
 };
 
-const credentialsValidator = ({ email, firstName, lastName, password }) => {
+const credentialsValidator = ({ email, fullName, password }) => {
     if (!emailValidator(email)) {
         throw new Error('Invalid email!');
     }
@@ -111,7 +110,7 @@ const credentialsValidator = ({ email, firstName, lastName, password }) => {
             'numbers and special characters!');
     }
 
-    if (!nameValidator(firstName) || !nameValidator(lastName)) {
+    if (!nameValidator(fullName)) {
         throw new Error('The name should only contain letters, spaces and dashes.');
     }
 };
