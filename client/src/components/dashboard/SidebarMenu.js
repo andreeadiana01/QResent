@@ -51,12 +51,7 @@ const SidebarMenu = () => {
                     </Menu.Item>
                 </SubMenu>
             }
-
-            <Menu.Item key="classes" icon={<BookOutlined/>}>
-                <Link to="/classes"/>
-                Classes
-            </Menu.Item>
-
+            
             <Menu.Item key="settings" icon={<SettingOutlined/>}>
                 <Link to="/settings"/>
                 Settings
