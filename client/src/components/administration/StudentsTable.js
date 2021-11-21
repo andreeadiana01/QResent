@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Input, InputNumber, Popconfirm, Form, Typography, Spin, Button } from 'antd';
+import { Table, Input, InputNumber, Popconfirm, Form, Typography, Spin, Button, message } from 'antd';
 import AddStudentModal from "./AddStudentModal";
 import '../../constants';
 import { departments, years, grades } from "../../constants";
@@ -34,12 +34,15 @@ const StudentsTable = () => {
     const [students, setStudents] = useState([]);
     const [data, setData] = useState(students);
 
-    useEffect(() => {
-        axios.get('/api/students', { headers: { 'Content-Type': 'application/json' } })
+    const fetchStudents = () => {
+        return axios.get('/api/students', { headers: { 'Content-Type': 'application/json' } })
             .then((response) => {
-                setLoading(false);
                 setStudents(response.data);
             });
+    }
+
+    useEffect(() => {
+        fetchStudents().then(() => setLoading(false));
     }, []);
 
     const isEditing = (record) => record.key === editingKey;
@@ -85,7 +88,11 @@ const StudentsTable = () => {
     };
 
     function deleteStudent(record) {
-
+        axios.delete(`/api/students/${record._id}`, { headers: { 'Content-Type': 'application/json' }})
+            .then(() => {
+                message.success('Student deleted');
+                fetchStudents();
+            });
     }
 
     const columns = [
@@ -187,20 +194,6 @@ const StudentsTable = () => {
         };
     });
 
-    const handleAdd = () => {
-        const { count, dataSource } = this.state;
-        const newData = {
-            key: count,
-            name: `Edward King ${count}`,
-            age: '32',
-            address: `London, Park Lane no. ${count}`,
-        };
-        this.setState({
-            dataSource: [...dataSource, newData],
-            count: count + 1,
-        });
-    };
-
     return (
         <div className="content">
             {
@@ -212,7 +205,7 @@ const StudentsTable = () => {
                                     marginBottom: 16,
                                 }}
                         >
-                            Add a row
+                            Add student
                         </Button>
                         <Form form={form} component={false}>
                             <Table
@@ -233,7 +226,7 @@ const StudentsTable = () => {
                         </Form>
 
                         <AddStudentModal visible={modalVisibility} toggleModalVisibility={toggleModalVisibility}
-                                         onOk={handleAdd}/>
+                                         onOk={fetchStudents}/>
                     </div>
             }
         </div>

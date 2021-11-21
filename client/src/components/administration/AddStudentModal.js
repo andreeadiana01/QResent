@@ -12,7 +12,7 @@ const AddStudentModal = (props) => {
                    </Button>
                ]}
         >
-            <AddStudentForm/>
+            <AddStudentForm onAdd={props.onOk}/>
         </Modal>
     );
 };

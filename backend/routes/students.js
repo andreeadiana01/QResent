@@ -22,7 +22,7 @@ router.get("/:id", (req, res) => {
 
 router.post('/', (req, res) => {
     const { email, firstName, lastName, department, year, grade } = req.body;
-    const fullName = `${firstName} ${lastName}`;
+    const fullName = `${lastName} ${firstName}`;
 
     const student = new User({ email, fullName, department, year, grade });
 
@@ -35,6 +35,12 @@ router.post('/', (req, res) => {
     student.save()
         .then(() => sendActivationEmail(student, res))
         .catch(err => res.status(400).json(err));
+});
+
+router.delete('/:id', (req, res) => {
+   User.findByIdAndDelete(req.params.id)
+       .then(() => res.json('Student deleted!'))
+       .catch(() => res.status(404).json('Student not found!'));
 });
 
 module.exports = router;

@@ -11,7 +11,7 @@ import axios from "axios";
 
 let formValues = {};
 
-const AddStudentForm = () => {
+const AddStudentForm = (props) => {
     const [componentSize, setComponentSize] = useState('default');
     const [form] = Form.useForm();
 
@@ -60,6 +60,7 @@ const AddStudentForm = () => {
                 if (response.status === 200) {
                     message.success('An activation link has been sent to your email address!');
                     form.resetFields();
+                    props.onAdd();
                 }
             })
             .catch(err => handleError(err));
