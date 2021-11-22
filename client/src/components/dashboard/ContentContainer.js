@@ -4,6 +4,7 @@ import ContentHeader from './ContentHeader';
 import Settings from "../pages/Settings";
 import StudentsTable from "../administration/StudentsTable";
 import ClassesPage from "./ClassesPage";
+import QRCodeContent from './QRCode';
 
 const { Content } = Layout;
 
@@ -15,7 +16,7 @@ const ContentContainer = (props) => {
             <div id="content-div">
                 {props.title === 'Dashboard' && <ClassesPage/>}
                 {props.title === 'Manage students' && <StudentsTable/>}
-                {/*{props.title === 'Manage classes' && </>}*/}
+                {props.title === 'Manage classes' && <QRCodeContent/>}
                 {props.title === 'Settings' && <Settings/>}
             </div>
 
