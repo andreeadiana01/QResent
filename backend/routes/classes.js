@@ -91,5 +91,10 @@ router.delete('/:classId/students/:studentId', (req, res) => {
 //         .catch(err => res.status(404).json(err));
 // });
 
+router.get("/:classID/generate", (req, res) => {
+
+    generateTokenAttendance({date: Date.now(), classID: req.params.classID}, res);
+
+});
 
 module.exports = router;
