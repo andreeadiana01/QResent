@@ -46,11 +46,12 @@ const Dashboard = (props) => {
                            render={(props) => <ContentContainer {...props} title="Manage classes"/>}/>
                     <Route path="/admin/classes/:class"
                            render={(props) => <ContentContainer {...props} title={className}
+                                                                adminClassId={props.match.params.class}/>}/>
+                    <Route path="/classes/:class"
+                           render={(props) => <ContentContainer {...props} title={className}
                                                                 classId={props.match.params.class}/>}/>
                     <Route exact path="/settings"
                            render={(props) => <ContentContainer {...props} title="Settings"/>}/>
-                    <Route exact path="/qr"
-                           render={(props) => <ContentContainer {...props} title="Generate QR"/>}/>
                 </Layout>
             </Layout>
         </Router>

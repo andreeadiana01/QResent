@@ -21,4 +21,6 @@ for (let j = 1; j <= 4; j++) {
     grades.push(`34${j}C5`);
 }
 
-module.exports = { years, departments, grades };
+const colors = ['#DFACCC', '#A7D2EB', '#95A48B', '#FFE683', '#EBA3A4', '#F1B75F'];
+
+module.exports = { years, departments, grades, colors };

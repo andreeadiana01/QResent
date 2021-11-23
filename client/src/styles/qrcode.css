@@ -50,6 +50,7 @@
     background: rgba(88,104,191, 0.5);
   }
   #qrcode-container{
+    size: 500px;
       display:none;
   }
 

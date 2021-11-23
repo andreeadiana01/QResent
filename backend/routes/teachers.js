@@ -6,7 +6,7 @@ const { hashPassword, addToken, emailValidator } = require("../utils/auth");
 const router = express.Router();
 
 router.get('/', (req, res) => {
-    User.find({role: 'TEACHER'})
+    User.find({ role: 'TEACHER' })
         .select('-password')
         .then(teachers => res.json(teachers))
         .catch(err => res.status(404).json(err));
@@ -16,7 +16,7 @@ router.post('/', (req, res) => {
     const { email, firstName, lastName, password, isAdmin } = req.body;
     const fullName = `${lastName} ${firstName}`;
 
-    const teacher = new User({ email, fullName, password, isAdmin, role: 'TEACHER', isActive: true});
+    const teacher = new User({ email, fullName, password, isAdmin, role: 'TEACHER', isActive: true });
 
     try {
         emailValidator(req.body);
@@ -37,7 +37,7 @@ router.get("/:id", (req, res) => {
 });
 
 router.get("/:id/classes", (req, res) => {
-    Class.find({teacher : req.params.id})
+    Class.find({ teacherId: req.params.id })
         .then(classes => res.json(classes))
         .catch(err => res.status(404).json(err));
 });

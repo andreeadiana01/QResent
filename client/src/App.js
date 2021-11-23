@@ -5,7 +5,7 @@ import AuthenticatedRoute from './components/authentication/AuthenticatedRoute';
 import PrivateRoute from "./components/authentication/PrivateRoute";
 import Dashboard from "./components/dashboard/Dashboard";
 import ActivateAccount from "./components/authentication/ActivateAccount";
-import QRCode from "./components/dashboard/QRCode";
+import QRCode from "./components/dashboard/qr/QRCode";
 
 const App = () => {
     return (
@@ -20,7 +20,7 @@ const App = () => {
                 <PrivateRoute path="/admin/classes/:class" component={Dashboard} />
                 <PrivateRoute path="/admin/:content" component={Dashboard} />
 
-                <PrivateRoute path="/classes" component={Dashboard} />
+                <PrivateRoute path="/classes/:class" component={Dashboard} />
                 <PrivateRoute path="/settings" component={Dashboard} />
                 <PrivateRoute path="/qr" component={QRCode} />
             </Switch>

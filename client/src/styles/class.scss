@@ -1,0 +1,19 @@
+.class-card {
+  width: 90%;
+  height: 300px;
+
+  #class-background {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 70%;
+    width: 100%;
+  }
+
+  .class-title {
+    font-family: "Open Sans SemiBold", sans-serif;
+    color: #F7F7F7;
+    font-size: 5rem;
+    margin: 0;
+  }
+}
