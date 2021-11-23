@@ -6,12 +6,14 @@ import { colors } from '../../../constants';
 import { message, Spin } from "antd";
 
 const ClassesPage = () => {
-    const teacherId = isAuthenticated().user._id;
+    const user = isAuthenticated().user;
     const [classes, setClasses] = useState([]);
     const [loading, setLoading] = useState(true);
 
     const fetchClasses = () => {
-        return axios.get(`/api/teachers/${teacherId}/classes`)
+        const resource = user.role === 'TEACHER' ? 'teachers' : 'students';
+
+        return axios.get(`/api/${resource}/${user._id}/classes`)
             .then(response => setClasses(response.data))
             .catch(() => message.error('Couldn\'t fetch classes'));
     }

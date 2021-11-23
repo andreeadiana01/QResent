@@ -24,6 +24,12 @@ const AuthenticationForm = (props) => {
         setModalVisibility(!modalVisibility);
     };
 
+    const postAttend = (jwtToken) => {
+        axios.post('/api/attendance', {jwtToken: jwtToken, attendanceToken: props.attendanceToken})
+            .then(response => message.success(response.data))
+            .catch(() => message.error('Couldn\'t add attendance entry!'));
+    }
+
     /**
      * Register or login call to server
      * @param values - values inserted in the input fields
@@ -43,6 +49,10 @@ const AuthenticationForm = (props) => {
                 if (response.status === 200) {
                     if (props.type === 'login') {
                         response.data.remember = values.remember;
+
+                        if (props.action === 'attend') {
+                            postAttend(response.data.token);
+                        }
 
                         return authenticate(response.data, () => history.push('/dashboard'));
                     }

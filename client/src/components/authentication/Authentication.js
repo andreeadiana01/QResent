@@ -8,9 +8,9 @@ import logoQresent from '../../assets/images/qresent-logo.svg'
 const { TabPane } = Tabs;
 
 const Authentication = (props) => {
-    const [ activeTab, setActiveTab ] = useState(props.form);
-    const [ registrationForm ] = Form.useForm();
-    const [ loginForm ] = Form.useForm();
+    const [activeTab, setActiveTab] = useState(props.form);
+    const [registrationForm] = Form.useForm();
+    const [loginForm] = Form.useForm();
 
     const resetFields = () => {
         registrationForm.resetFields();
@@ -35,19 +35,21 @@ const Authentication = (props) => {
             <div id="container">
                 <div id="illustration-container">
                     <img id="illustration" src={logoUpb}
-                         alt="login-illustration" />
+                         alt="login-illustration"/>
                 </div>
 
                 <div id="authentication-container">
-                    <img id="logo" src={logoQresent} alt="logo.svg" />
+                    <img id="logo" src={logoQresent} alt="logo.svg"/>
 
                     <div id="tabs">
                         <Tabs size="large" activeKey={activeTab} onTabClick={changeActiveTab} centered animated>
                             <TabPane name="register" tab="Register" key="register">
                                 <div className="form">
                                     <h1 className="form-title">Create Account</h1>
-                                    <AuthenticationForm type="register" title="Sign Up" url="/api/auth/register"
-                                                        form={registrationForm} />
+                                    <AuthenticationForm type="register" action={props.action}
+                                                        attendanceToken={props.attendanceToken}
+                                                        title="Sign Up" url="/api/auth/register"
+                                                        form={registrationForm}/>
                                     Already have an account?
                                     <button className="toggleTabButton" name="login" onClick={toggleActiveTab}>
                                         Sign in!
@@ -58,8 +60,9 @@ const Authentication = (props) => {
                             <TabPane name="login" tab="Login" key="login">
                                 <div className="form">
                                     <h1 className="form-title">Login</h1>
-                                    <AuthenticationForm type="login" title="Sign In" url="/api/auth/login"
-                                                        form={loginForm} />
+                                    <AuthenticationForm type="login" action={props.action}
+                                                        attendanceToken={props.attendanceToken} title="Sign In"
+                                                        url="/api/auth/login" form={loginForm}/>
                                     Don't have an account?
                                     <button className="toggleTabButton" name="register" onClick={toggleActiveTab}>
                                         Sign up!

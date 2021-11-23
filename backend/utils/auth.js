@@ -116,15 +116,22 @@ const credentialsValidator = ({ email, fullName, password }) => {
 };
 
 const generateTokenAttendance = (attendance, res) => {
+    const payload = {
+        attendance_date: attendance.date,
+        classID: attendance.classID
+    };
 
-    let payload = {attendance_date: attendance.date,
-                    classID: attendance.classID};
+    const token = jwt.sign(payload, process.env.JWT_KEY, { expiresIn: 120 });
 
-    const token = jwt.sign(payload, process.env.JWT_KEY, { expiresIn: 60 * 60});
-
-    return res.json({accessToken: token});
-
+    return res.json(`${process.env.CLIENT_URL}/attend/${token}` );
 };
 
-module.exports = { sendActivationEmail, hashPassword, credentialsValidator, emailValidator, addToken, generateTokenAttendance };
+module.exports = {
+    sendActivationEmail,
+    hashPassword,
+    credentialsValidator,
+    emailValidator,
+    addToken,
+    generateTokenAttendance
+};
 

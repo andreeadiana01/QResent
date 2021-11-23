@@ -8,6 +8,7 @@ const authRouter = require('./routes/auth');
 const studentsRouter = require('./routes/students');
 const teachersRouter = require('./routes/teachers');
 const attendanceRouter = require('./routes/attendance');
+const { departments } = require("../client/src/constants");
 
 require('dotenv').config();
 

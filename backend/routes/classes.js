@@ -1,6 +1,7 @@
 const express = require('express');
 const Class = require('../models/Class');
 const User = require("../models/User");
+const { generateTokenAttendance } = require("../utils/auth");
 
 const router = express.Router();
 
@@ -92,9 +93,7 @@ router.delete('/:classId/students/:studentId', (req, res) => {
 // });
 
 router.get("/:classID/generate", (req, res) => {
-
     generateTokenAttendance({date: Date.now(), classID: req.params.classID}, res);
-
 });
 
 module.exports = router;

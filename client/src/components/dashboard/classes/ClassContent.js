@@ -1,12 +1,14 @@
-import React from "react";
-import { Button } from "antd";
+import React, { useState } from "react";
+import { Button, message } from "antd";
+import axios from "axios";
+import GenerateQR from "./GenerateQR";
+import Attendance from "../Attendance";
 
 const ClassContent = (props) => {
-    const classId = props.classId;
-
     return (
         <div className="content">
-            <Button type="primary">Generate QR</Button>
+            <GenerateQR classId={props.classId}/>
+            <Attendance/>
         </div>
     );
 };

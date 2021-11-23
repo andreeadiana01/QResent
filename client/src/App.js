@@ -6,6 +6,8 @@ import PrivateRoute from "./components/authentication/PrivateRoute";
 import Dashboard from "./components/dashboard/Dashboard";
 import ActivateAccount from "./components/authentication/ActivateAccount";
 import QRCode from "./components/dashboard/qr/QRCode";
+import AttendClass from "./components/dashboard/AttendClass";
+import { Route } from "react-router";
 
 const App = () => {
     return (
@@ -15,6 +17,8 @@ const App = () => {
                                     component={(props) => <Authentication {...props} form='login'/>} />
 
                 <AuthenticatedRoute path="/activate/:activationToken" component={ActivateAccount} />
+
+                <Route path="/attend/:attendanceToken" component={AttendClass} />
 
                 <PrivateRoute path="/dashboard" exact component={Dashboard} />
                 <PrivateRoute path="/admin/classes/:class" component={Dashboard} />

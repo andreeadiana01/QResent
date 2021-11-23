@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { Table, Input, InputNumber, Popconfirm, Form, Typography, Spin, Button, message } from 'antd';
-import AddStudentModal from "./AddStudentModal";
-import '../../../constants';
-import { departments, years, grades } from "../../../constants";
+import React, { useEffect, useState } from "react";
+import { Form, Input, InputNumber, message, Popconfirm, Spin, Table, Typography } from "antd";
+import AddStudentModal from "../administration/students/AddStudentModal";
+import { departments, years, grades } from "../../constants";
 import axios from "axios";
 
 const EditableCell = ({ editing, dataIndex, title, inputType, record, index, children, ...restProps }) => {
@@ -27,7 +26,7 @@ const EditableCell = ({ editing, dataIndex, title, inputType, record, index, chi
     );
 };
 
-const StudentsTable = (props) => {
+const Attendance = (props) => {
     const [form] = Form.useForm();
     const [editingKey, setEditingKey] = useState('');
     const [loading, setLoading] = useState(true);
@@ -199,10 +198,6 @@ const StudentsTable = (props) => {
                 loading ?
                     <Spin size="large"/> :
                     <div>
-                        <Button type="primary" onClick={toggleModalVisibility}>
-                            Add Student
-                        </Button>
-
                         <Form form={form} component={false}>
                             <Table
                                 components={{
@@ -229,4 +224,4 @@ const StudentsTable = (props) => {
     );
 };
 
-export default StudentsTable;
+export default Attendance;
