@@ -53,3 +53,8 @@
     border: solid 0.3rem #111111;
   }
 }
+
+#select-students {
+  display: flex;
+  flex-direction: column;
+}

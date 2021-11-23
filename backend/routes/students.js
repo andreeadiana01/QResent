@@ -1,8 +1,6 @@
 const express = require('express');
-const jwt = require('jsonwebtoken');
 const User = require('../models/User');
-const bcrypt = require('bcrypt');
-const { sendActivationEmail, hashPassword, credentialsValidator, emailValidator, addToken } = require('../utils/auth');
+const { sendActivationEmail, emailValidator } = require('../utils/auth');
 
 const router = express.Router();
 
@@ -37,10 +35,24 @@ router.post('/', (req, res) => {
         .catch(err => res.status(400).json(err));
 });
 
+router.post('/:id/classes', (req, res) => {
+    const { classId } = req.body;
+
+    User.updateOne({ _id: req.params.id, 'classes': { $not: { $elemMatch: { classes: classId } } } }, {
+        $push: {
+            classes: {
+                classes: classId,
+                totalGrade: 0
+            }
+        }
+    })
+        .then(() => res.json('Success'));
+})
+
 router.delete('/:id', (req, res) => {
-   User.findByIdAndDelete(req.params.id)
-       .then(() => res.json('Student deleted!'))
-       .catch(() => res.status(404).json('Student not found!'));
+    User.findByIdAndDelete(req.params.id)
+        .then(() => res.json('Student deleted!'))
+        .catch(() => res.status(404).json('Student not found!'));
 });
 
 module.exports = router;

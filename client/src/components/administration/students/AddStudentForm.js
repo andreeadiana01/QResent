@@ -6,7 +6,7 @@ import {
     message,
     Select,
 } from 'antd';
-import * as constants from "../../constants";
+import * as constants from "../../../constants";
 import axios from "axios";
 
 let formValues = {};

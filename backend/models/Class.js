@@ -9,7 +9,7 @@ const ClassSchema = mongoose.Schema({
         type: String,
         require: true,
     },
-    teacher: {
+    teacherId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         require: true,
@@ -17,7 +17,6 @@ const ClassSchema = mongoose.Schema({
     grading: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Grading',
-        default: '',
     },
     attendanceToken: {
         type: String,
