@@ -46,7 +46,8 @@ const SelectStudents = (props) => {
                     <div id="select-students">
                         {
                             students.map(student => (
-                                    <Checkbox defaultChecked={false} onChange={onChange} value={student._id} key={student._id}>
+                                    <Checkbox defaultChecked={false} onChange={onChange} value={student._id}
+                                              key={student._id}>
                                         {student.fullName} - {student.grade}
                                     </Checkbox>
                                 )

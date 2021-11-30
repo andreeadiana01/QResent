@@ -117,8 +117,8 @@ const credentialsValidator = ({ email, fullName, password }) => {
 
 const generateTokenAttendance = (attendance, res) => {
     const payload = {
-        attendance_date: attendance.date,
-        classID: attendance.classID
+        date: attendance.date,
+        classId: attendance.classId
     };
 
     const token = jwt.sign(payload, process.env.JWT_KEY, { expiresIn: 120 });

@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const AttendanceSchema = mongoose.Schema({
     date: {
-        type: Date,
+        type: Number,
         default: Date.now(),
         require: true,
     },

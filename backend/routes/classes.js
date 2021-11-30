@@ -81,7 +81,7 @@ router.delete('/:classId/students/:studentId', (req, res) => {
     const studentId = req.params.studentId;
     const classId = req.params.classId;
 
-    User.findByIdAndUpdate(studentId, { $pull: { classes:  { classes: classId }  } })
+    User.findByIdAndUpdate(studentId, { $pull: { classes: { classes: classId } } })
         .then(() => res.json('Student unenrolled!'))
         .catch(() => res.status(404).json('Student not found!'));
 });
@@ -93,7 +93,7 @@ router.delete('/:classId/students/:studentId', (req, res) => {
 // });
 
 router.get("/:classID/generate", (req, res) => {
-    generateTokenAttendance({date: Date.now(), classID: req.params.classID}, res);
+    generateTokenAttendance({ date: Date.now(), classID: req.params.classID }, res);
 });
 
 module.exports = router;

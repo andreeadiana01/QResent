@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { Form, Input, InputNumber, message, Popconfirm, Spin, Table, Typography } from "antd";
-import AddStudentModal from "../administration/students/AddStudentModal";
-import { departments, years, grades } from "../../constants";
+import React, { useEffect, useState } from 'react';
+import { Table, Input, InputNumber, Popconfirm, Form, Typography, Spin, message } from 'antd';
+import { grades } from "../../../constants";
 import axios from "axios";
 
 const EditableCell = ({ editing, dataIndex, title, inputType, record, index, children, ...restProps }) => {
@@ -26,24 +25,23 @@ const EditableCell = ({ editing, dataIndex, title, inputType, record, index, chi
     );
 };
 
-const Attendance = (props) => {
+const StudentsGradesTable = () => {
     const [form] = Form.useForm();
     const [editingKey, setEditingKey] = useState('');
     const [loading, setLoading] = useState(true);
     const [students, setStudents] = useState([]);
     const [data, setData] = useState(students);
-    const [courseId, setCourseId] = useState(1);
 
-    const fetchAttendance = () => {
-        // return axios.get(`/api/attendance/${props.classId}/${props.course}`, { headers: { 'Content-Type': 'application/json' } })
-        //     .then((response) => {
-        //         setStudents(response.data);
-        //     });
+    const fetchStudents = () => {
+        return axios.get('/api/students', { headers: { 'Content-Type': 'application/json' } })
+            .then((response) => {
+                setStudents(response.data);
+            });
     }
 
-    // useEffect(() => {
-    //     fetchAttendance().then(() => setLoading(false));
-    // }, []);
+    useEffect(() => {
+        fetchStudents().then(() => setLoading(false));
+    }, []);
 
     const isEditing = (record) => record.key === editingKey;
     const [modalVisibility, setModalVisibility] = useState(false);
@@ -87,13 +85,6 @@ const Attendance = (props) => {
         }
     };
 
-    function deleteStudent(record) {
-        axios.delete(`/api/students/${record._id}`, { headers: { 'Content-Type': 'application/json' }})
-            .then(() => {
-                fetchAttendance().then(() => message.success('Student deleted'));
-            });
-    }
-
     const columns = [
         {
             title: 'Name',
@@ -104,24 +95,6 @@ const Attendance = (props) => {
             sortDirections: ['ascend'],
         },
         {
-            title: 'Department',
-            dataIndex: 'department',
-            width: '10%',
-            editable: true,
-            filters: departments.map((department) => ({ text: department, value: department })),
-            sorter: (a, b) => a.department.localeCompare(b.department),
-            onFilter: (value, record) => record.department === value
-        },
-        {
-            title: 'Year',
-            dataIndex: 'year',
-            width: '10%',
-            editable: true,
-            filters: years.map((year) => ({ text: year, value: year })),
-            sorter: (a, b) => a.year - b.year,
-            onFilter: (value, record) => record.year === value
-        },
-        {
             title: 'Grade',
             dataIndex: 'grade',
             width: '10%',
@@ -129,50 +102,6 @@ const Attendance = (props) => {
             filters: grades.map((grade) => ({ text: grade, value: grade })),
             sorter: (a, b) => a.grade.localeCompare(b.grade),
             onFilter: (value, record) => record.grade === value
-        },
-        {
-            title: 'Email',
-            dataIndex: 'email',
-            width: '20%',
-            editable: false,
-        },
-        {
-            title: '',
-            dataIndex: 'operation',
-            render: (_, record) => {
-                const editable = isEditing(record);
-                return editable ? (
-                    <span>
-                        <a
-                            href="javascript:"
-                            onClick={() => save(record.key)}
-                            style={{
-                                marginRight: 8,
-                            }}
-                        >
-                          Save
-                        </a>
-                        <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
-                          <a>Cancel</a>
-                        </Popconfirm>
-                    </span>
-                ) : (
-                    <Typography.Link disabled={editingKey !== ''} onClick={() => edit(record)}>
-                        Edit
-                    </Typography.Link>
-                );
-            },
-        },
-        {
-            title: '',
-            dataIndex: 'operation',
-            render: (_, record) => {
-                return (
-                    <Typography.Link onClick={() => deleteStudent(record)}>
-                        Delete
-                    </Typography.Link>
-                );
-            },
         },
     ];
 
@@ -216,13 +145,10 @@ const Attendance = (props) => {
                                 }}
                             />
                         </Form>
-
-                        <AddStudentModal visible={modalVisibility} toggleModalVisibility={toggleModalVisibility}
-                                         onOk={fetchAttendance}/>
                     </div>
             }
         </div>
     );
 };
 
-export default Attendance;
+export default StudentsGradesTable;

@@ -48,7 +48,7 @@ const GenerateQR = (props) => {
 
     return (
         <div id="content">
-            <Button type="primary" onClick={openModal}>Generate QR</Button>
+            <Button style={{'margin': '0 0.5rem'}} type="primary" onClick={openModal}>Generate QR</Button>
 
             <Modal title="Please scan QR" visible={modalVisibility} onCancel={destroyModal}
                    destroyOnClose={true}

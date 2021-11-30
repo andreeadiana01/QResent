@@ -1,6 +1,6 @@
 const express = require('express');
 const User = require('../models/User');
-const { sendActivationEmail, emailValidator } = require('../utils/auth');
+const { sendActivationEmail, emailValidator, hashPassword, addToken } = require('../utils/auth');
 const Class = require("../models/Class");
 
 const router = express.Router();
@@ -20,10 +20,10 @@ router.get("/:id", (req, res) => {
 });
 
 router.post('/', (req, res) => {
-    const { email, firstName, lastName, department, year, grade, isActive } = req.body;
+    const { email, firstName, lastName, department, password, year, grade, isActive } = req.body;
     const fullName = `${lastName} ${firstName}`;
 
-    const student = new User({ email, fullName, department, year, grade, isActive });
+    const student = new User({ email, fullName, department, year, grade, isActive, password });
 
     try {
         emailValidator(req.body);
@@ -32,7 +32,7 @@ router.post('/', (req, res) => {
     }
 
     student.save()
-        .then(() => res.send('ok'))
+        .then(() => hashPassword(student, password, res, () => res.send('ok')))
         // .then(() => sendActivationEmail(student, res))
         .catch(err => res.status(400).json(err));
 });
