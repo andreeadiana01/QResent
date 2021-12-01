@@ -1,7 +1,7 @@
 const express = require('express');
 const User = require('../models/User');
 const { sendActivationEmail, emailValidator, hashPassword, addToken } = require('../utils/auth');
-const Class = require("../models/Class");
+const Class = require('../models/Class');
 
 const router = express.Router();
 
@@ -10,9 +10,9 @@ router.get('/', (req, res) => {
         .select('-password')
         .then(students => res.json(students))
         .catch(err => res.status(404).json(err));
-})
+});
 
-router.get("/:id", (req, res) => {
+router.get('/:id', (req, res) => {
     User.findById(req.params.id)
         .select('-password')
         .then(student => res.json(student))
@@ -32,8 +32,7 @@ router.post('/', (req, res) => {
     }
 
     student.save()
-        .then(() => hashPassword(student, password, res, () => res.send('ok')))
-        // .then(() => sendActivationEmail(student, res))
+        .then(() => sendActivationEmail(student, res))
         .catch(err => res.status(400).json(err));
 });
 
@@ -49,7 +48,7 @@ router.post('/:id/classes', (req, res) => {
         }
     })
         .then(() => res.json('Success'));
-})
+});
 
 router.get('/:id/classes', (req, res) => {
     User.findById(req.params.id)

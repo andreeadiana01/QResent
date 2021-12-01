@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-import ClassCard from "./ClassCard";
-import { isAuthenticated } from "../../../auth";
-import axios from "axios";
+import React, { useEffect, useState } from 'react';
+import ClassCard from './ClassCard';
+import { isAuthenticated } from '../../../auth';
+import axios from 'axios';
 import { colors } from '../../../constants';
-import { message, Spin } from "antd";
+import { message, Spin } from 'antd';
 
 const ClassesPage = () => {
     const user = isAuthenticated().user;
@@ -16,7 +16,7 @@ const ClassesPage = () => {
         return axios.get(`/api/${resource}/${user._id}/classes`)
             .then(response => setClasses(response.data))
             .catch(() => message.error('Couldn\'t fetch classes'));
-    }
+    };
 
     useEffect(() => {
         fetchClasses().then(() => setLoading(false));

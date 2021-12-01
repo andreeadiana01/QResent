@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Input, InputNumber, Popconfirm, Form, Typography, Spin, message } from 'antd';
-import { grades } from "../../../constants";
-import axios from "axios";
+import { Form, Input, InputNumber, Spin, Table } from 'antd';
+import { grades } from '../../../constants';
+import axios from 'axios';
 
 const EditableCell = ({ editing, dataIndex, title, inputType, record, index, children, ...restProps }) => {
     const inputNode = inputType === 'number' ? <InputNumber/> : <Input/>;
     return (
         <td {...restProps}>
             {editing ? (
-                <Form.Item name={dataIndex} style={{ margin: 0, }}
+                <Form.Item name={dataIndex} style={{ margin: 0 }}
                            rules={[
                                {
                                    required: true,
-                                   message: `Please Input ${title}!`,
-                               },
+                                   message: `Please Input ${title}!`
+                               }
                            ]}
                 >
                     {inputNode}
@@ -37,7 +37,7 @@ const StudentsGradesTable = () => {
             .then((response) => {
                 setStudents(response.data);
             });
-    }
+    };
 
     useEffect(() => {
         fetchStudents().then(() => setLoading(false));
@@ -51,14 +51,14 @@ const StudentsGradesTable = () => {
             name: '',
             age: '',
             address: '',
-            ...record,
+            ...record
         });
         setEditingKey(record.key);
     };
 
     const toggleModalVisibility = () => {
         setModalVisibility(!modalVisibility);
-    }
+    };
 
     const cancel = () => {
         setEditingKey('');
@@ -92,7 +92,7 @@ const StudentsGradesTable = () => {
             width: '25%',
             editable: false,
             sorter: (a, b) => a.name.localeCompare(b.name),
-            sortDirections: ['ascend'],
+            sortDirections: ['ascend']
         },
         {
             title: 'Grade',
@@ -102,7 +102,7 @@ const StudentsGradesTable = () => {
             filters: grades.map((grade) => ({ text: grade, value: grade })),
             sorter: (a, b) => a.grade.localeCompare(b.grade),
             onFilter: (value, record) => record.grade === value
-        },
+        }
     ];
 
     const mergedColumns = columns.map((col) => {
@@ -117,8 +117,8 @@ const StudentsGradesTable = () => {
                 inputType: 'text',
                 dataIndex: col.dataIndex,
                 title: col.title,
-                editing: isEditing(record),
-            }),
+                editing: isEditing(record)
+            })
         };
     });
 
@@ -132,8 +132,8 @@ const StudentsGradesTable = () => {
                             <Table
                                 components={{
                                     body: {
-                                        cell: EditableCell,
-                                    },
+                                        cell: EditableCell
+                                    }
                                 }}
                                 bordered
                                 dataSource={students}
@@ -141,7 +141,7 @@ const StudentsGradesTable = () => {
                                 rowClassName="editable-row"
                                 pagination={{
                                     onChange: cancel,
-                                    defaultPageSize: 20,
+                                    defaultPageSize: 20
                                 }}
                             />
                         </Form>

@@ -6,8 +6,8 @@ const config = (token) => {
     return {
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`,
-        },
+            'Authorization': `Bearer ${token}`
+        }
     };
 };
 
@@ -82,7 +82,7 @@ export default {
     }),
 
     add: action((state, album) => {
-        state.albums = [ album, ...state.albums ];
+        state.albums = [album, ...state.albums];
     }),
 
     delete: action((state, deezerID) => {
@@ -99,6 +99,6 @@ export default {
 
     findAlbum: action((state) => {
         state.foundAlbums = state.albums.filter(album => searchQuery(album, state.searchString));
-    }),
+    })
 };
 

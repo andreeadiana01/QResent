@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
-import { isAuthenticated } from "../../auth";
-import Authentication from "../authentication/Authentication";
-import { message, Spin } from "antd";
-import axios from "axios";
+import React, { useEffect } from 'react';
+import { isAuthenticated } from '../../../auth';
+import Authentication from '../../authentication/Authentication';
+import { message, Spin } from 'antd';
+import axios from 'axios';
 
 const AttendClass = (props) => {
     useEffect(() => {
@@ -16,7 +16,7 @@ const AttendClass = (props) => {
         })
             .then(response => message.success(response.data))
             .catch(() => message.error('Couldn\'t add attendance entry!'));
-    }
+    };
 
     return (
         <div id="background">
@@ -26,7 +26,7 @@ const AttendClass = (props) => {
                     <Authentication form="login" action="attend" attendanceToken={props.match.params.attendanceToken}/>
             }
         </div>
-    )
-}
+    );
+};
 
 export default AttendClass;

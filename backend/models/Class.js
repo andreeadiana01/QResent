@@ -3,30 +3,25 @@ const mongoose = require('mongoose');
 const ClassSchema = mongoose.Schema({
     name: {
         type: String,
-        require: true,
+        require: true
     },
     alias: {
         type: String,
-        require: true,
+        require: true
     },
     teacherId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
-        require: true,
+        require: true
     },
     grading: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Grading',
+        ref: 'Grading'
     },
     attendanceToken: {
         type: String,
-        default: '',
-    },
-    attendanceList: {
-        type: [ mongoose.Schema.Types.ObjectId ],
-        ref: 'Attendance',
-        default: [],
-    },
+        default: ''
+    }
 });
 
 const Class = mongoose.model('Class', ClassSchema);

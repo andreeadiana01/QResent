@@ -1,13 +1,36 @@
 const express = require('express');
 const Class = require('../models/Class');
-const User = require("../models/User");
-const { generateTokenAttendance } = require("../utils/auth");
+const User = require('../models/User');
+const { generateAttendanceToken } = require('../utils/attendance');
 
 const router = express.Router();
 
 router.get('/', (req, res) => {
-    Class.find({})
-        .then(classes => res.json(classes));
+
+    Class.aggregate([
+        {
+            $lookup:
+                {
+                    from: 'users',
+                    localField: 'teacherId',
+                    foreignField: '_id',
+                    as: 'teacher_details'
+                }
+        },
+        {
+            $unwind: '$teacher_details'
+        },
+        {
+            $project:
+                {
+                    '_id': 1,
+                    'alias': 1,
+                    'name': 1,
+                    'teacherName': '$teacher_details.fullName'
+                }
+        }
+    ])
+        .then(attendants => res.json(attendants));
 });
 
 router.post('/', (req, res) => {
@@ -40,7 +63,7 @@ router.get('/:classId/students', (req, res) => {
             { 'classes': { $elemMatch: { classes: classId } } },
             { 'role': 'STUDENT' }
         ]
-    }
+    };
 
     User.find(query)
         .then(user => res.json(user))
@@ -54,7 +77,7 @@ router.get('/:classId/studentsNotEnrolled', (req, res) => {
             { 'classes': { $not: { $elemMatch: { classes: classId } } } },
             { 'role': 'STUDENT' }
         ]
-    }
+    };
 
     User.find(query)
         .then(user => res.json(user))
@@ -70,7 +93,7 @@ router.post('/:classId/students', (req, res) => {
             { '_id': { $in: students } },
             { 'classes': { $not: { $elemMatch: { classes: classId } } } }
         ]
-    }
+    };
 
     User.updateMany(query, { $push: { classes: { classes: classId, totalGrade: 0 } } })
         .then(() => res.json('Students enrolled successfully!'))
@@ -86,14 +109,9 @@ router.delete('/:classId/students/:studentId', (req, res) => {
         .catch(() => res.status(404).json('Student not found!'));
 });
 
-// router.get("/:teacherId/classes", (req, res) => {
-//     Class.find({teacher : req.params.teacherId})
-//         .then(classes => res.json(classes))
-//         .catch(err => res.status(404).json(err));
-// });
-
-router.get("/:classID/generate", (req, res) => {
-    generateTokenAttendance({ date: Date.now(), classID: req.params.classID }, res);
+router.get('/:classId/:attempt/generate', (req, res) => {
+    const {classId, attempt} = req.params;
+    generateAttendanceToken({ date: Date.now(), classId: classId, attempt: attempt }, res);
 });
 
 module.exports = router;

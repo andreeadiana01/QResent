@@ -1,21 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Input, InputNumber, Popconfirm, Form, Typography, Spin, Button, message } from 'antd';
-import AddStudentModal from "./AddStudentModal";
+import { Button, Form, Input, InputNumber, message, Popconfirm, Spin, Table, Typography } from 'antd';
+import AddStudentModal from './AddStudentModal';
 import '../../../constants';
-import { departments, years, grades } from "../../../constants";
-import axios from "axios";
+import { departments, grades, years } from '../../../constants';
+import axios from 'axios';
 
 const EditableCell = ({ editing, dataIndex, title, inputType, record, index, children, ...restProps }) => {
     const inputNode = inputType === 'number' ? <InputNumber/> : <Input/>;
     return (
         <td {...restProps}>
             {editing ? (
-                <Form.Item name={dataIndex} style={{ margin: 0, }}
+                <Form.Item name={dataIndex} style={{ margin: 0 }}
                            rules={[
                                {
                                    required: true,
-                                   message: `Please Input ${title}!`,
-                               },
+                                   message: `Please Input ${title}!`
+                               }
                            ]}
                 >
                     {inputNode}
@@ -39,7 +39,7 @@ const StudentsTable = (props) => {
             .then((response) => {
                 setStudents(response.data);
             });
-    }
+    };
 
     useEffect(() => {
         fetchStudents().then(() => setLoading(false));
@@ -53,14 +53,14 @@ const StudentsTable = (props) => {
             name: '',
             age: '',
             address: '',
-            ...record,
+            ...record
         });
         setEditingKey(record.key);
     };
 
     const toggleModalVisibility = () => {
         setModalVisibility(!modalVisibility);
-    }
+    };
 
     const cancel = () => {
         setEditingKey('');
@@ -88,7 +88,7 @@ const StudentsTable = (props) => {
     };
 
     function deleteStudent(record) {
-        axios.delete(`/api/students/${record._id}`, { headers: { 'Content-Type': 'application/json' }})
+        axios.delete(`/api/students/${record._id}`, { headers: { 'Content-Type': 'application/json' } })
             .then(() => {
                 fetchStudents().then(() => message.success('Student deleted'));
             });
@@ -101,7 +101,7 @@ const StudentsTable = (props) => {
             width: '25%',
             editable: false,
             sorter: (a, b) => a.name.localeCompare(b.name),
-            sortDirections: ['ascend'],
+            sortDirections: ['ascend']
         },
         {
             title: 'Department',
@@ -134,7 +134,7 @@ const StudentsTable = (props) => {
             title: 'Email',
             dataIndex: 'email',
             width: '20%',
-            editable: false,
+            editable: false
         },
         {
             title: '',
@@ -147,7 +147,7 @@ const StudentsTable = (props) => {
                             href="javascript:"
                             onClick={() => save(record.key)}
                             style={{
-                                marginRight: 8,
+                                marginRight: 8
                             }}
                         >
                           Save
@@ -161,7 +161,7 @@ const StudentsTable = (props) => {
                         Edit
                     </Typography.Link>
                 );
-            },
+            }
         },
         {
             title: '',
@@ -172,8 +172,8 @@ const StudentsTable = (props) => {
                         Delete
                     </Typography.Link>
                 );
-            },
-        },
+            }
+        }
     ];
 
     const mergedColumns = columns.map((col) => {
@@ -188,8 +188,8 @@ const StudentsTable = (props) => {
                 inputType: 'text',
                 dataIndex: col.dataIndex,
                 title: col.title,
-                editing: isEditing(record),
-            }),
+                editing: isEditing(record)
+            })
         };
     });
 
@@ -199,7 +199,7 @@ const StudentsTable = (props) => {
                 loading ?
                     <Spin size="large"/> :
                     <div>
-                        <Button type="primary" onClick={toggleModalVisibility}>
+                        <Button type="primary" onClick={toggleModalVisibility} style={{ 'margin-bottom': '1rem' }}>
                             Add Student
                         </Button>
 
@@ -207,8 +207,8 @@ const StudentsTable = (props) => {
                             <Table
                                 components={{
                                     body: {
-                                        cell: EditableCell,
-                                    },
+                                        cell: EditableCell
+                                    }
                                 }}
                                 bordered
                                 dataSource={students}
@@ -216,7 +216,7 @@ const StudentsTable = (props) => {
                                 rowClassName="editable-row"
                                 pagination={{
                                     onChange: cancel,
-                                    defaultPageSize: 20,
+                                    defaultPageSize: 20
                                 }}
                             />
                         </Form>

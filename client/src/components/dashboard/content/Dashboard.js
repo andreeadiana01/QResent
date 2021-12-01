@@ -3,8 +3,8 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { Layout } from 'antd';
 import ContentContainer from './ContentContainer';
 import DashboardHeader from './DashboardHeader';
-import Sidebar from './Sidebar';
-import axios from "axios";
+import Sidebar from '../menu/Sidebar';
+import axios from 'axios';
 
 const Dashboard = (props) => {
 
@@ -27,7 +27,7 @@ const Dashboard = (props) => {
         axios.get(`/api/classes/${classId}`)
             .then(response => setClassName(response.data.name))
             .catch(err => console.log(err));
-    }
+    };
 
 
     return (

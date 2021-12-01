@@ -1,6 +1,6 @@
-import React from "react";
-import { Button, Modal } from "antd";
-import AddClassForm from "./AddClassForm";
+import React from 'react';
+import { Button, Modal } from 'antd';
+import AddClassForm from './AddClassForm';
 
 const AddClassModal = (props) => {
     return (

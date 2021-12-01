@@ -7,11 +7,11 @@ const ContentHeader = (props) => {
     const routes = [
         {
             path: '/dashboard',
-            breadcrumbName: 'Home',
+            breadcrumbName: 'Home'
         },
         {
-            breadcrumbName: props.title,
-        },
+            breadcrumbName: props.title
+        }
     ];
 
     const itemRender = (route, params, routes, paths) => {

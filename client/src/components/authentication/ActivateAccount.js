@@ -11,15 +11,15 @@ const ActivateAccount = () => {
     const { activationToken } = useParams();
     const history = useHistory();
 
-    const [ error, setError ] = useState({
+    const [error, setError] = useState({
         message: '',
-        source: '',
+        source: ''
     });
 
     const resetPassword = (values) => {
         const data = {
             password: values.password,
-            activationToken: activationToken,
+            activationToken: activationToken
         };
 
         axios.post('/api/auth/activate', data, { headers: { 'Content-Type': 'application/json' } })
@@ -44,8 +44,8 @@ const ActivateAccount = () => {
                     <p>Insert your new password below.</p>
 
                     <Form onFinish={resetPassword}>
-                        <PasswordField formType="register" error={error} />
-                        <SubmitButton title="Reset Password" />
+                        <PasswordField formType="register" error={error}/>
+                        <SubmitButton title="Reset Password"/>
                     </Form>
                 </div>
             </div>

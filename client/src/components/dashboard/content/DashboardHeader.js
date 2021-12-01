@@ -1,7 +1,7 @@
 import React from 'react';
 import { Avatar, Button, Cascader, Layout } from 'antd';
 import { LogoutOutlined, MenuFoldOutlined, MenuUnfoldOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
-import { isAuthenticated, signOut } from '../../auth/index';
+import { isAuthenticated, signOut } from '../../../auth';
 
 const { Header } = Layout;
 
@@ -11,15 +11,15 @@ const options = [
         label: <div style={{ fontSize: '1rem', margin: '0.3rem 1.3rem 0.3rem 0.2rem' }}>
             <SettingOutlined style={{ marginRight: '0.7rem' }}/>
             Settings
-        </div>,
+        </div>
     },
     {
         value: 'logout',
         label: <div style={{ fontSize: '1rem', margin: '0.3rem 1.3rem 0.3rem 0.2rem' }}>
             <LogoutOutlined style={{ marginRight: '0.7rem' }}/>
             Logout
-        </div>,
-    },
+        </div>
+    }
 ];
 
 const DashboardHeader = (props) => {
@@ -39,7 +39,7 @@ const DashboardHeader = (props) => {
             <div id="header-left">
                 {
                     React.createElement(props.collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
-                        { className: 'trigger', onClick: props.toggleCollapse },
+                        { className: 'trigger', onClick: props.toggleCollapse }
                     )
                 }
             </div>

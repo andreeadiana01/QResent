@@ -9,25 +9,25 @@ import '../../styles/settings.scss';
 
 const Settings = () => {
     const { user, token } = isAuthenticated();
-    const [ form ] = Form.useForm();
+    const [form] = Form.useForm();
 
-    const [ error, setError ] = useState({
+    const [error, setError] = useState({
         message: '',
-        source: '',
+        source: ''
     });
 
     const changePassword = (values) => {
         const data = {
             email: user.email,
             password: values.password,
-            newPassword: values.newPassword,
+            newPassword: values.newPassword
         };
 
         const config = {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
-            },
+                'Authorization': `Bearer ${token}`
+            }
         };
 
         axios.post(`/api/users/${user._id}/change-password`, data, config)
@@ -50,11 +50,11 @@ const Settings = () => {
                 <div id="credentials">
                     <label>Email:</label>
                     <Input size="large" value={user.email} disabled={true}
-                           prefix={<MailOutlined className="site-form-item-icon" />} />
+                           prefix={<MailOutlined className="site-form-item-icon"/>}/>
 
                     <label>Full Name:</label>
-                    <Input size="large" value={user.fullName}  disabled={true}
-                           prefix={<UserOutlined className="site-form-item-icon" />} />
+                    <Input size="large" value={user.fullName} disabled={true}
+                           prefix={<UserOutlined className="site-form-item-icon"/>}/>
                 </div>
 
                 <Divider>Change Password</Divider>
@@ -62,12 +62,12 @@ const Settings = () => {
                 <div id="change-password">
                     <Form form={form} onFinish={changePassword}>
                         <PasswordField className="password" formType="login" placeholder="Current Password"
-                                       error={error} name="password" />
+                                       error={error} name="password"/>
 
                         <PasswordField className="password" formType="register" placeholder="New Password"
-                                       error={{ message: '', source: '' }} name="newPassword" />
+                                       error={{ message: '', source: '' }} name="newPassword"/>
 
-                        <SubmitButton type="submit" title="Change Password" />
+                        <SubmitButton type="submit" title="Change Password"/>
                     </Form>
                 </div>
             </div>

@@ -1,72 +1,111 @@
 const express = require('express');
 const Attendance = require('../models/Attendance');
-const jwt = require("jsonwebtoken");
-const User = require("../models/User");
+const jwt = require('jsonwebtoken');
+const User = require('../models/User');
 const { parse } = require('json2csv');
-const { getLogger } = require("nodemailer/lib/shared");
+const { getAttendants, getStartAndEndOfDay } = require('../utils/attendance');
 
 const router = express.Router();
 
-router.get('/:classId', (req, res) => {
-    const { classId } = req.params;
-
-    Attendance.find({ class: classId }, 'date')
-        .then(attendants => res.json(attendants))
-        .catch(() => res.status(404).json('No entries found!'));
-});
-
 router.get('/:classId/:date', (req, res) => {
-    const { classId, date } = req.params;
-    const currentTime = date * 1000;
-    const threeHoursFutureTime = currentTime + 3 * 60 * 60 * 1000;
-
-    Attendance.find({ class: classId, date: {$gt: currentTime, $lt: threeHoursFutureTime} })
+    getAttendants(req)
         .then(attendants => res.json(attendants))
+        .catch(() => res.status(404).json('No entry found!'));
+});
+
+router.get('/:classId/:date/statistics', (req, res) => {
+    const { classId, date } = req.params;
+    const { startOfDay, endOfDay } = getStartAndEndOfDay(date);
+
+    Attendance.find({
+        class: classId,
+        date:
+            {
+                $gte: startOfDay.getTime(),
+                $lte: endOfDay.getTime()
+            }
+    })
+        .distinct('student')
+        .then(result => res.send(result.length));
+});
+
+router.get('/:classId/:date/attempt', (req, res) => {
+    const { classId, date } = req.params;
+    const { startOfDay, endOfDay } = getStartAndEndOfDay(date);
+
+    Attendance.find({
+        class: classId,
+        date:
+            {
+                $gte: startOfDay.getTime(),
+                $lte: endOfDay.getTime()
+            }
+    }, {
+        'attempt': 1,
+        '_id': 0
+    })
+        .then(result => {
+            if (!result.length) {
+                return res.json(1);
+            }
+
+            const attempts = result.map(item => item.attempt);
+            res.json(Math.max(...attempts) + 1);
+        })
         .catch(() => res.status(404).json('No entries found!'));
 });
 
-router.post('/export', ((req, res) => {
-    const { classId, courseId } = req.body;
-
+router.get('/:classId/:date/export', ((req, res) => {
     const fields = [
         {
-            value: 'student',
+            value: 'attempt',
+            label: 'Attempt'
+        },
+        {
+            value: 'studentName',
+            label: 'Student Name'
+        },
+        {
+            value: 'studentId',
             label: 'Student ID'
         },
         {
-            value: 'course',
-            label: 'Course'
+            value: 'department',
+            label: 'Department'
         },
         {
-            value: 'date',
+            value: 'year',
+            label: 'Year'
+        },
+        {
+            value: 'grade',
+            label: 'Grade'
+        },
+        {
+            value: 'attendanceDate',
             label: 'Date'
         },
         {
-            value: 'class',
+            value: 'className',
             label: 'Class'
         }
-    ]
+    ];
 
-    Attendance.find({ class: classId, course: courseId })
+    getAttendants(req)
         .then(attendants => {
-            const students = attendants.map(attendant => attendant.student);
-            const classes = attendants.map(attendant => attendant.class);
-            let mergedAttendance;
-
-            User.find({ _id: { $in: students } })
-                .then(students => {
-                    mergedAttendance = attendants.map((item, i) => Object)
-                })
-
             const csv = parse(attendants, { fields: fields });
-            res.attachment('data.csv');
-            res.end(csv);
+            res.send(csv);
         })
-        .catch((err) => {
-            console.log(err);
-            res.status(404).json('No entries found!')
-        });
-}))
+        .catch(err => res.status(500).json(err));
+}));
+
+router.get('/:classId/statistics', (req, res) => {
+    const { classId } = req.params;
+
+    Attendance.find({ class: classId })
+        .distinct('student')
+        .then(result => res.send(result.length));
+});
 
 router.post('/', (req, res) => {
     const { jwtToken, attendanceToken } = req.body;
@@ -87,8 +126,8 @@ router.post('/', (req, res) => {
 
             Attendance.create({
                 date: attendanceData.date,
-                course: attendanceData.courseId,
-                class: attendanceData.classID,
+                class: attendanceData.classId,
+                attempt: attendanceData.attempt,
                 student: userData.id
             })
                 .then(() => res.json('Class attended!'))

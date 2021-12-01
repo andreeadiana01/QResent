@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { Button, Form, Input, message, Select, Spin } from "antd";
-import axios from "axios";
+import React, { useEffect, useState } from 'react';
+import { Button, Form, Input, message, Select } from 'antd';
+import axios from 'axios';
 
 const AddClassForm = (props) => {
     const [componentSize, setComponentSize] = useState('default');
@@ -11,7 +11,7 @@ const AddClassForm = (props) => {
     const fetchTeachers = () => {
         return axios.get('/api/teachers/', { headers: { 'Content-Type': 'application/json' } })
             .then(response => setTeachers(response.data));
-    }
+    };
 
     useEffect(() => {
         fetchTeachers().then(() => setLoading(false));
@@ -23,7 +23,7 @@ const AddClassForm = (props) => {
 
     const requiredRule = (field) => ({
         required: true,
-        message: `Please insert the ${field}!`,
+        message: `Please insert the ${field}!`
     });
 
     const handleError = (err) => {
@@ -47,22 +47,22 @@ const AddClassForm = (props) => {
 
     return (
         <div>
-            <Form form={form} labelCol={{ span: 4, }} wrapperCol={{ span: 14, }} layout="horizontal"
+            <Form form={form} labelCol={{ span: 4 }} wrapperCol={{ span: 14 }} layout="horizontal"
                   initialValues={{
-                      size: componentSize,
+                      size: componentSize
                   }}
                   onValuesChange={onFormLayoutChange}
                   size={componentSize}
                   onFinish={addClass}
             >
 
-                <Form.Item label="Name" name="name" rules={[requiredRule("name")]}>
+                <Form.Item label="Name" name="name" rules={[requiredRule('name')]}>
                     <Input/>
                 </Form.Item>
-                <Form.Item label="Alias" name="alias" rules={[requiredRule("alias")]}>
+                <Form.Item label="Alias" name="alias" rules={[requiredRule('alias')]}>
                     <Input/>
                 </Form.Item>
-                <Form.Item label="Teacher" name="teacherId" rules={[requiredRule("department")]}>
+                <Form.Item label="Teacher" name="teacherId" rules={[requiredRule('department')]}>
                     <Select>
                         {
                             loading ?

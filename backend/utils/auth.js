@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const validator = require('email-validator');
 const User = require('../models/User');
-const nodemailer = require("nodemailer");
+const nodemailer = require('nodemailer');
 
 require('dotenv').config({ path: __dirname + '/../.env' });
 
@@ -23,9 +23,9 @@ const addToken = (user, res) => {
                 email: user.email,
                 fullName: user.fullName,
                 role: user.role,
-                isAdmin: user.isAdmin,
+                isAdmin: user.isAdmin
             },
-            token,
+            token
         });
     });
 
@@ -58,19 +58,19 @@ const sendActivationEmail = (user, res) => {
         html: `
             <h3>Please click on the following link to activate your QResent account:</h3>
             <a href="${process.env.CLIENT_URL}/activate/${token}">activate account</a>
-        `,
+        `
     };
 
     user.activationToken = token;
 
     const transporter = nodemailer.createTransport({
-        host: "smtp.gmail.com",
+        host: 'smtp.gmail.com',
         port: 587,
         secure: false,
         auth: {
-            user: "qresent.upb@gmail.com",
-            pass: process.env.EMAIL_PASSWORD,
-        },
+            user: 'qresent.upb@gmail.com',
+            pass: process.env.EMAIL_PASSWORD
+        }
     });
 
     user.save()
@@ -115,23 +115,11 @@ const credentialsValidator = ({ email, fullName, password }) => {
     }
 };
 
-const generateTokenAttendance = (attendance, res) => {
-    const payload = {
-        date: attendance.date,
-        classId: attendance.classId
-    };
-
-    const token = jwt.sign(payload, process.env.JWT_KEY, { expiresIn: 120 });
-
-    return res.json(`${process.env.CLIENT_URL}/attend/${token}` );
-};
-
 module.exports = {
     sendActivationEmail,
     hashPassword,
     credentialsValidator,
     emailValidator,
-    addToken,
-    generateTokenAttendance
+    addToken
 };
 

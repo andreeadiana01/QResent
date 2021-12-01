@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { Avatar, Button, List, Spin } from "antd";
-import axios from "axios";
-import AddClassModal from "./AddClassModal";
+import React, { useEffect, useState } from 'react';
+import { Avatar, Button, List, Spin } from 'antd';
+import axios from 'axios';
+import AddClassModal from './AddClassModal';
 
 const ClassesList = () => {
     const [loading, setLoading] = useState(true);
@@ -10,12 +10,12 @@ const ClassesList = () => {
 
     const toggleModalVisibility = () => {
         setModalVisibility(!modalVisibility);
-    }
+    };
 
     const fetchClasses = () => {
-        return axios.get('/api/classes/', { headers: { 'Content-Type': 'application/json', } })
+        return axios.get('/api/classes/', { headers: { 'Content-Type': 'application/json' } })
             .then(response => setClasses(response.data));
-    }
+    };
 
     useEffect(() => {
         fetchClasses().then(() => setLoading(false));
@@ -33,7 +33,7 @@ const ClassesList = () => {
                     <div>
                         <Button onClick={toggleModalVisibility} type="primary"
                                 style={{
-                                    marginBottom: 16,
+                                    marginBottom: 16
                                 }}
                         >
                             Add class
@@ -47,12 +47,13 @@ const ClassesList = () => {
                                         avatar={
                                             <Avatar style={{
                                                 color: '#f56a00',
-                                                backgroundColor: '#fde3cf',
+                                                backgroundColor: '#fde3cf'
                                             }}>
                                                 {item.alias}
                                             </Avatar>
                                         }
                                         title={<a href={getLink(item)}>{item.name}</a>}
+                                        description={'Teacher: ' + item.teacherName}
                                         actions={[<a key="list-loadmore-edit">edit</a>,
                                             <a key="list-loadmore-more">more</a>]}
                                     />

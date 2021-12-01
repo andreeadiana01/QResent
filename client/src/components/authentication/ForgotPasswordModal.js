@@ -6,12 +6,12 @@ import SubmitButton from './inputs/SubmitButton';
 
 const ForgotPasswordModal = (props) => {
 
-    const [ error, setError ] = useState({
+    const [error, setError] = useState({
         message: '',
-        source: '',
+        source: ''
     });
 
-    const [ loading, setLoading ] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const requestPasswordReset = (values) => {
         const { email } = values;
@@ -39,8 +39,8 @@ const ForgotPasswordModal = (props) => {
 
             <div style={{ margin: '2rem auto' }}>
                 <Form onFinish={requestPasswordReset}>
-                    <EmailField formType="login" error={error} />
-                    <SubmitButton title="Send Email" loading={loading} />
+                    <EmailField formType="login" error={error}/>
+                    <SubmitButton title="Send Email" loading={loading}/>
                 </Form>
             </div>
         </Modal>

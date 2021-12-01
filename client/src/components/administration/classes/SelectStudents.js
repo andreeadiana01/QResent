@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { Checkbox, Spin, message, Button } from 'antd';
-import axios from "axios";
+import React, { useEffect, useState } from 'react';
+import { Button, Checkbox, message, Spin } from 'antd';
+import axios from 'axios';
 
 const SelectStudents = (props) => {
     const [loading, setLoading] = useState(true);
@@ -12,7 +12,7 @@ const SelectStudents = (props) => {
             { headers: { 'Content-Type': 'application/json' } })
             .then((response) => setStudents(response.data))
             .catch((err) => message.error(err));
-    }
+    };
 
     useEffect(() => {
         fetchStudents().then(() => setLoading(false));
@@ -22,10 +22,10 @@ const SelectStudents = (props) => {
         axios.post(`/api/classes/${props.classId}/students`, { students: checkedList })
             .then(() => {
                 props.updateTable();
-                fetchStudents().then(() => message.success('Students added successfully!'))
+                fetchStudents().then(() => message.success('Students added successfully!'));
             })
             .catch((err) => message.error(err));
-    }
+    };
 
     const onChange = (list) => {
         const item = list.target;
@@ -61,6 +61,6 @@ const SelectStudents = (props) => {
             }
         </div>
     );
-}
+};
 
 export default SelectStudents;

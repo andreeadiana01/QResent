@@ -13,11 +13,11 @@ const AuthenticationForm = (props) => {
 
     const history = useHistory();
 
-    const [ modalVisibility, setModalVisibility ] = useState(false);
-    const [ loading, setLoading ] = useState(false);
-    const [ error, setError ] = useState({
+    const [modalVisibility, setModalVisibility] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState({
         message: '',
-        source: '',
+        source: ''
     });
 
     const toggleModalVisibility = () => {
@@ -25,10 +25,10 @@ const AuthenticationForm = (props) => {
     };
 
     const postAttend = (jwtToken) => {
-        axios.post('/api/attendance', {jwtToken: jwtToken, attendanceToken: props.attendanceToken})
+        axios.post('/api/attendance', { jwtToken: jwtToken, attendanceToken: props.attendanceToken })
             .then(response => message.success(response.data))
             .catch(() => message.error('Couldn\'t add attendance entry!'));
-    }
+    };
 
     /**
      * Register or login call to server
@@ -40,8 +40,8 @@ const AuthenticationForm = (props) => {
         const data = JSON.stringify(values);
         const config = {
             headers: {
-                'Content-Type': 'application/json',
-            },
+                'Content-Type': 'application/json'
+            }
         };
 
         axios.post(props.url, data, config)
@@ -66,20 +66,20 @@ const AuthenticationForm = (props) => {
     };
 
     const handleError = (err) => {
-        props.form.resetFields([ 'password' ]);
+        props.form.resetFields(['password']);
         setLoading(false);
         setError(err.response.data);
     };
 
     return (
         <Form name={props.type} initialValues={{ remember: true }} onFinish={auth} form={props.form}>
-            {props.type === 'register' && <FullNameField error={error} />}
-            <EmailField error={error} formType={props.type} />
-            <PasswordField error={error} formType={props.type} />
+            {props.type === 'register' && <FullNameField error={error}/>}
+            <EmailField error={error} formType={props.type}/>
+            <PasswordField error={error} formType={props.type}/>
             {
                 props.type === 'login' &&
                 <div id="login-actions">
-                    <Form.Item name='remember' valuePropName='checked' style={{ margin: 0 }}>
+                    <Form.Item name="remember" valuePropName="checked" style={{ margin: 0 }}>
                         <Checkbox>Keep me signed in</Checkbox>
                     </Form.Item>
 
@@ -89,9 +89,9 @@ const AuthenticationForm = (props) => {
                 </div>
             }
 
-            <SubmitButton title={props.title} loading={loading} />
+            <SubmitButton title={props.title} loading={loading}/>
 
-            <ForgotPasswordModal modalVisibility={modalVisibility} toggleModalVisibility={toggleModalVisibility} />
+            <ForgotPasswordModal modalVisibility={modalVisibility} toggleModalVisibility={toggleModalVisibility}/>
         </Form>
     );
 };

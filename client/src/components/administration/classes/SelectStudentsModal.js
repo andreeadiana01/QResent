@@ -1,6 +1,6 @@
-import React from "react";
-import { Button, Modal } from "antd";
-import SelectStudents from "./SelectStudents";
+import React from 'react';
+import { Button, Modal } from 'antd';
+import SelectStudents from './SelectStudents';
 
 const SelectStudentsModal = (props) => {
     return (

@@ -3,12 +3,12 @@ const mongoose = require('mongoose');
 const GradingSchema = mongoose.Schema({
     criteria: {
         type: String,
-        require: true,
+        require: true
     },
     percent: {
         type: Number,
-        require: true,
-    },
+        require: true
+    }
 });
 
 module.exports = GradingSchema;
