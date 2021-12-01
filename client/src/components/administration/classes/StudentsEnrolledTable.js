@@ -3,6 +3,7 @@ import { Button, Form, Input, InputNumber, message, Spin, Table, Typography } fr
 import axios from 'axios';
 import { departments, grades, years } from '../../../constants';
 import SelectStudentsModal from './SelectStudentsModal';
+import { isAuthenticated } from '../../../auth';
 
 const EditableCell = ({ editing, dataIndex, title, inputType, record, index, children, ...restProps }) => {
     const inputNode = inputType === 'number' ? <InputNumber/> : <Input/>;
@@ -38,6 +39,7 @@ const StudentsEnrolledTable = (props) => {
                 setStudents(response.data);
             });
     };
+
 
     useEffect(() => {
         fetchStudents().then(() => setLoading(false));
@@ -118,6 +120,7 @@ const StudentsEnrolledTable = (props) => {
         if (!col.editable) {
             return col;
         }
+
 
         return {
             ...col,

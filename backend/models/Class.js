@@ -15,12 +15,22 @@ const ClassSchema = mongoose.Schema({
         require: true
     },
     grading: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Grading'
+        type: [{
+            criteria: {
+                type: String,
+                require: true
+            },
+            points: {
+                type: Number,
+                require: true
+            }
+        }]
     },
-    attendanceToken: {
-        type: String,
-        default: ''
+    schedule: {
+        type: {
+            day: String,
+            time: String,
+        }
     }
 });
 

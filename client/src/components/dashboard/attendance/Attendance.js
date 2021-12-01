@@ -6,6 +6,7 @@ import axios from 'axios';
 import moment from 'moment';
 import { ExportOutlined, LineChartOutlined } from '@ant-design/icons';
 import StatisticsModal from './StatisticsModal';
+import { isAuthenticated } from '../../../auth';
 
 const { Panel } = Collapse;
 
@@ -61,6 +62,10 @@ const Attendance = (props) => {
             .then(response => setAttempts(response.data - 1));
     };
 
+    const isTeacher = () => {
+        return isAuthenticated().role === 'TEACHER';
+    };
+
     const getStudentsEnrolled = () => {
         axios.get(`/api/classes/${props.classId}/students`, { headers: { 'Content-Type': 'application/json' } })
             .then((response) => setStudentsEnrolled(response.data.length));
@@ -100,27 +105,38 @@ const Attendance = (props) => {
         <div className="content">
             <div id="attendance-header">
                 <DatePicker allowClear={false} onChange={changeDate} defaultValue={moment()}/>
-                <div id="attendance-buttons">
-                    {
-                        isToday(selectedDate) && <GenerateQR classId={props.classId} date={selectedDate}/>
-                    }
-                    {
-                        !!attendances.length &&
-                        <Button icon={<LineChartOutlined/>} type="primary" onClick={toggleModalVisibility}>
-                            Statistics
-                        </Button>
-                    }
-                    {
-                        !!attendances.length &&
-                        <Button icon={<ExportOutlined/>} type="primary" onClick={exportCsv}>
-                            Export CSV
-                        </Button>
-                    }
-                </div>
+                {
+                    isTeacher() ?
+                        <div id="attendance-buttons">
+                            {
+                                isToday(selectedDate) && <GenerateQR classId={props.classId} date={selectedDate}/>
+                            }
+                            {
+                                !!attendances.length &&
+                                <Button icon={<LineChartOutlined/>} type="primary" onClick={toggleModalVisibility}>
+                                    Statistics
+                                </Button>
+                            }
+                            {
+                                !!attendances.length &&
+                                <Button icon={<ExportOutlined/>} type="primary" onClick={exportCsv}>
+                                    Export CSV
+                                </Button>
+                            }
+                        </div> :
+                        <div id="attendance-buttons">
+                            {
+                                !!attendances.length &&
+                                <Button icon={<LineChartOutlined/>} type="primary" onClick={toggleModalVisibility}>
+                                    Statistics
+                                </Button>
+                            }
+                        </div>
+                }
             </div>
 
             {
-                !!attendances.length ?
+                (!!attendances.length && isTeacher()) ?
                     <Collapse bordered={false} defaultActiveKey={['1']}>
                         {
                             Array.apply(0, Array(attempts)).map((x, i) => getPanel(i))

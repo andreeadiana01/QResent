@@ -136,7 +136,6 @@ const StatisticsModal = (props) => {
                     </Card>
                 </div>
             </div>
-
         </Modal>
     );
 };

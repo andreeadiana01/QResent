@@ -84,6 +84,40 @@ router.get('/:classId/studentsNotEnrolled', (req, res) => {
         .catch((err) => res.status(404).json(err));
 });
 
+router.get('/:classId/grading', (req, res) => {
+    const classId = req.params.classId;
+
+    Class.findById(classId, 'grading')
+        .then(grading => res.json(grading))
+        .catch((err) => res.status(404).json(err));
+});
+
+router.post('/:classId/grading', (req, res) => {
+    const classId = req.params.classId;
+    const { grading } = req.body;
+
+    Class.updateOne({ _id: classId }, { $push: { grading: grading } })
+        .then(grading => res.json(grading))
+        .catch((err) => res.status(404).json(err));
+});
+
+router.post('/:classId/schedule', (req, res) => {
+    const classId = req.params.classId;
+    const { day, time } = req.body;
+
+    Class.updateOne({ _id: classId }, { schedule: { day: day, time: time } })
+        .then(response => res.json(response))
+        .catch((err) => res.status(404).json(err));
+});
+
+router.get('/:classId/schedule', (req, res) => {
+    const classId = req.params.classId;
+
+    Class.findById(classId)
+        .then(schedule => res.json(schedule))
+        .catch((err) => res.status(404).json(err));
+});
+
 router.post('/:classId/students', (req, res) => {
     const { students } = req.body;
     const classId = req.params.classId;
@@ -110,7 +144,7 @@ router.delete('/:classId/students/:studentId', (req, res) => {
 });
 
 router.get('/:classId/:attempt/generate', (req, res) => {
-    const {classId, attempt} = req.params;
+    const { classId, attempt } = req.params;
     generateAttendanceToken({ date: Date.now(), classId: classId, attempt: attempt }, res);
 });
 
