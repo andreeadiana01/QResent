@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Form, Input, InputNumber, message, Spin, Table, Typography } from 'antd';
-import axios from 'axios';
+import { Form, Input, InputNumber, message, Popconfirm, Spin, Table, Typography } from 'antd';
+import AddStudentModal from '../../administration/students/AddStudentModal';
 import { departments, grades, years } from '../../../constants';
-import SelectStudentsModal from './SelectStudentsModal';
-import { isAuthenticated } from '../../../auth';
+import axios from 'axios';
 
 const EditableCell = ({ editing, dataIndex, title, inputType, record, index, children, ...restProps }) => {
     const inputNode = inputType === 'number' ? <InputNumber/> : <Input/>;
@@ -27,44 +26,13 @@ const EditableCell = ({ editing, dataIndex, title, inputType, record, index, chi
     );
 };
 
-const StudentsEnrolledTable = (props) => {
+const AttendanceTable = (props) => {
     const [form] = Form.useForm();
-    const [editingKey, setEditingKey] = useState('');
-    const [loading, setLoading] = useState(true);
-    const [students, setStudents] = useState([]);
-
-    const fetchStudents = () => {
-        return axios.get(`/api/classes/${props.classId}/students`, { headers: { 'Content-Type': 'application/json' } })
-            .then((response) => {
-                setStudents(response.data);
-            });
-    };
-
-
-    useEffect(() => {
-        fetchStudents().then(() => setLoading(false));
-    }, []);
-
-    const isEditing = (record) => record.key === editingKey;
-    const [modalVisibility, setModalVisibility] = useState(false);
-
-    const toggleModalVisibility = () => {
-        setModalVisibility(!modalVisibility);
-    };
-
-    const cancel = () => {
-        setEditingKey('');
-    };
-
-    function unenrollStudent(record) {
-        axios.delete(`/api/classes/${props.classId}/students/${record._id}`)
-            .then(() => fetchStudents().then(() => message.success('Student unenrolled!')));
-    }
 
     const columns = [
         {
             title: 'Name',
-            dataIndex: 'fullName',
+            dataIndex: 'studentName',
             width: '25%',
             editable: false,
             sorter: (a, b) => a.name.localeCompare(b.name),
@@ -96,23 +64,6 @@ const StudentsEnrolledTable = (props) => {
             filters: grades.map((grade) => ({ text: grade, value: grade })),
             sorter: (a, b) => a.grade.localeCompare(b.grade),
             onFilter: (value, record) => record.grade === value
-        },
-        {
-            title: 'Email',
-            dataIndex: 'email',
-            width: '20%',
-            editable: false
-        },
-        {
-            title: '',
-            dataIndex: 'operation',
-            render: (_, record) => {
-                return (
-                    <Typography.Link onClick={() => unenrollStudent(record)}>
-                        Remove
-                    </Typography.Link>
-                );
-            }
         }
     ];
 
@@ -121,32 +72,23 @@ const StudentsEnrolledTable = (props) => {
             return col;
         }
 
-
         return {
             ...col,
             onCell: (record) => ({
                 record,
                 inputType: 'text',
                 dataIndex: col.dataIndex,
-                title: col.title,
-                editing: isEditing(record)
+                title: col.title
             })
         };
     });
 
     return (
-        <div className="content">
+        <div>
             {
-                loading ?
+                props.loading ?
                     <Spin size="large"/> :
                     <div>
-                        <Button onClick={toggleModalVisibility} type="primary"
-                                style={{
-                                    marginBottom: 16
-                                }}
-                        >
-                            Add students
-                        </Button>
                         <Form form={form} component={false}>
                             <Table
                                 components={{
@@ -155,22 +97,18 @@ const StudentsEnrolledTable = (props) => {
                                     }
                                 }}
                                 bordered
-                                dataSource={students}
+                                dataSource={props.students}
                                 columns={mergedColumns}
                                 rowClassName="editable-row"
                                 pagination={{
-                                    onChange: cancel,
                                     defaultPageSize: 20
                                 }}
                             />
                         </Form>
-
-                        <SelectStudentsModal visible={modalVisibility} toggleModalVisibility={toggleModalVisibility}
-                                             onOk={fetchStudents} classId={props.classId} updateTable={fetchStudents}/>
                     </div>
             }
         </div>
     );
 };
 
-export default StudentsEnrolledTable;
+export default AttendanceTable;

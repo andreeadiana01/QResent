@@ -40,8 +40,8 @@ export const signOut = (next) => {
         const config = {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
-            },
+                'Authorization': `Bearer ${token}`
+            }
         };
 
         localStorage.removeItem('jwt');

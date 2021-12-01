@@ -1,17 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Menu } from 'antd';
-import { isAuthenticated } from "../../auth";
+import { isAuthenticated } from '../../../auth';
+import { HomeOutlined, ReadOutlined, SettingOutlined, TeamOutlined, ToolOutlined } from '@ant-design/icons';
 
 const { SubMenu } = Menu;
-import {
-    BookOutlined,
-    HomeOutlined,
-    ReadOutlined,
-    SettingOutlined,
-    TeamOutlined,
-    ToolOutlined
-} from '@ant-design/icons';
 
 const SidebarMenu = () => {
     const getPageKey = () => {
@@ -51,7 +44,7 @@ const SidebarMenu = () => {
                     </Menu.Item>
                 </SubMenu>
             }
-            
+
             <Menu.Item key="settings" icon={<SettingOutlined/>}>
                 <Link to="/settings"/>
                 Settings

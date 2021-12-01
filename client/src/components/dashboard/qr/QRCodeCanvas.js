@@ -6,17 +6,17 @@ export default class QrCodeCanvas extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            value: ""
-        }
+            value: ''
+        };
     }
 
     componentDidMount() {
-        this.setState({ value: this.props.value })
+        this.setState({ value: this.props.value });
     }
 
     componentDidUpdate(prevProps) {
         if (this.props.value !== prevProps.value) {
-            this.setState({ value: this.props.value })
+            this.setState({ value: this.props.value });
         }
     }
 
@@ -25,7 +25,7 @@ export default class QrCodeCanvas extends Component {
             return;
         }
 
-        this.ctx = ctx.getContext("2d");
+        this.ctx = ctx.getContext('2d');
 
         const qrcode = qr(value);
 
@@ -60,7 +60,7 @@ export default class QrCodeCanvas extends Component {
                 }
             }
         }
-    }
+    };
 
     render() {
         const { value } = this.state;

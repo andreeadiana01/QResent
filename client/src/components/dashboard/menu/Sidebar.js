@@ -1,9 +1,9 @@
 import React from 'react';
 import { Divider, Layout } from 'antd';
-import '../../styles/dashboard.scss';
+import '../../../styles/dashboard.scss';
 import SidebarMenu from './SidebarMenu';
-import logoUpb from '../../assets/images/logo-upb.png'
-import logoQresent from '../../assets/images/qresent-logo.svg'
+import logoUpb from '../../../assets/images/logo-upb.png';
+import logoQresent from '../../../assets/images/qresent-logo.svg';
 
 const { Sider } = Layout;
 

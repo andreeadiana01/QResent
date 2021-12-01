@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Form, Input } from 'antd';
+import { Form, Input } from 'antd';
 import { MailOutlined } from '@ant-design/icons';
 
 const EmailField = (props) => {
 
     const [validationState, setValidationState] = useState({
         validateStatus: undefined,
-        help: null,
+        help: null
     });
 
     useEffect(() => {
@@ -18,7 +18,7 @@ const EmailField = (props) => {
             setValidationState({
                 validateStatus: 'error',
 
-                help: <span>Your account hasn't been activated! Please confirm your email address.</span>,
+                help: <span>Your account hasn't been activated! Please confirm your email address.</span>
             });
         }
         //eslint-disable-next-line
@@ -27,18 +27,18 @@ const EmailField = (props) => {
     const removeValidationState = () => {
         setValidationState({
             validateStatus: undefined,
-            help: null,
+            help: null
         });
     };
 
     const requiredRule = {
         required: true,
-        message: 'Please insert your email!',
+        message: 'Please insert your email!'
     };
 
     const patternRule = {
         type: 'email',
-        message: 'The input is not a valid email address!',
+        message: 'The input is not a valid email address!'
     };
 
     return (

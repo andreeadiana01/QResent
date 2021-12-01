@@ -3,30 +3,35 @@ const mongoose = require('mongoose');
 const ClassSchema = mongoose.Schema({
     name: {
         type: String,
-        require: true,
+        require: true
     },
     alias: {
         type: String,
-        require: true,
+        require: true
     },
     teacherId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
-        require: true,
+        require: true
     },
     grading: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Grading',
+        type: [{
+            criteria: {
+                type: String,
+                require: true
+            },
+            points: {
+                type: Number,
+                require: true
+            }
+        }]
     },
-    attendanceToken: {
-        type: String,
-        default: '',
-    },
-    attendanceList: {
-        type: [ mongoose.Schema.Types.ObjectId ],
-        ref: 'Attendance',
-        default: [],
-    },
+    schedule: {
+        type: {
+            day: String,
+            time: String,
+        }
+    }
 });
 
 const Class = mongoose.model('Class', ClassSchema);

@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { Form, Tabs } from 'antd';
 import '../../styles/authentication.scss';
 import AuthenticationForm from './AuthenticationForm';
-import logoUpb from '../../assets/images/logo-upb.png'
-import logoQresent from '../../assets/images/qresent-logo.svg'
+import logoUpb from '../../assets/images/logo-upb.png';
+import logoQresent from '../../assets/images/qresent-logo.svg';
 
 const { TabPane } = Tabs;
 

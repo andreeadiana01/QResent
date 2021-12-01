@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import '../../../styles/class.scss';
 import { Card } from 'antd';
-import { isAuthenticated } from "../../../auth";
-import axios from "axios";
+import { isAuthenticated } from '../../../auth';
+import axios from 'axios';
 
 const { Meta } = Card;
 
@@ -21,7 +21,7 @@ const ClassCard = (props) => {
             hoverable
             className="class-card"
             cover={
-                <div id="class-background" style={{'background-color': props.color}}>
+                <div id="class-background" style={{ 'background-color': props.color }}>
                     <h1 className="class-title">{props.classObj.alias}</h1>
                 </div>
             }
@@ -29,7 +29,7 @@ const ClassCard = (props) => {
             <Meta title={props.classObj.name}
                   description={isAuthenticated().role === 'STUDENT' && `Teacher: ${teacherName}`}/>
         </Card>
-    )
+    );
 };
 
 export default ClassCard;

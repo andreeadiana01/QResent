@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Modal } from 'antd';
-import AddStudentForm from "./AddStudentForm";
+import AddStudentForm from './AddStudentForm';
 
 const AddStudentModal = (props) => {
     return (

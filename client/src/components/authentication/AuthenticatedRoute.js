@@ -6,8 +6,8 @@ const AuthenticatedRoute = ({ component: Component, ...rest }) => (
     <Route {...rest} render={props => !isAuthenticated() ? (
         <Component {...props} />
     ) : (
-        <Redirect to={{ pathname: '/dashboard', state: { from: props.location } }} />
-    )} />
+        <Redirect to={{ pathname: '/dashboard', state: { from: props.location } }}/>
+    )}/>
 );
 
 export default AuthenticatedRoute;
