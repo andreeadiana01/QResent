@@ -63,7 +63,7 @@ const Attendance = (props) => {
     };
 
     const isTeacher = () => {
-        return isAuthenticated().role === 'TEACHER';
+        return isAuthenticated().user.role === 'TEACHER';
     };
 
     const getStudentsEnrolled = () => {
