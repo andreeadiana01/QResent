@@ -22,3 +22,4 @@ activitatile din mediul online. Mai multe informatii sunt afisate pe pagina proi
 * **Server** - Node.js + Express
 * **Frontend** - ReactJS
 
+#### Drive: https://docs.google.com/document/d/1XlGFIw99jvWfTexGXpohdn-PowPYkqjf80WaLFDYD_w/edit?usp=sharing
