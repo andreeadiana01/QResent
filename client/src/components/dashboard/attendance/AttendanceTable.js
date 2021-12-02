@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Form, Input, InputNumber, message, Popconfirm, Spin, Table, Typography } from 'antd';
-import AddStudentModal from '../../administration/students/AddStudentModal';
 import { departments, grades, years } from '../../../constants';
-import axios from 'axios';
 
 const EditableCell = ({ editing, dataIndex, title, inputType, record, index, children, ...restProps }) => {
     const inputNode = inputType === 'number' ? <InputNumber/> : <Input/>;
