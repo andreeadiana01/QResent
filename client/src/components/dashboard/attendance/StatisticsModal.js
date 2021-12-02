@@ -65,14 +65,21 @@ const StatisticsModal = (props) => {
 
     const getActiveStudents = () => {
         const studentsPerAttempt = getStudentsByAttempt();
+        let studentsMiddle = [];
+        let studentsFinal = [];
 
         if (!studentsPerAttempt.length) {
             return [];
         }
 
         const studentsBeginning = studentsPerAttempt[0];
-        const studentsMiddle = studentsPerAttempt[1];
-        const studentsFinal = studentsPerAttempt[studentsPerAttempt.length - 1];
+
+        if (studentsPerAttempt.length < 2) {
+            return studentsBeginning;
+        }
+
+        studentsMiddle = studentsPerAttempt[1];
+        studentsFinal = studentsPerAttempt[studentsPerAttempt.length - 1];
 
         const studentsActiveBeginning = studentsBeginning.filter(item1 =>
             studentsMiddle.some(item2 => item1.studentId === item2.studentId));
@@ -85,14 +92,21 @@ const StatisticsModal = (props) => {
 
     const getFullyActiveStudents = () => {
         const studentsPerAttempt = getStudentsByAttempt();
+        let studentsMiddle = [];
+        let studentsFinal = [];
 
         if (!studentsPerAttempt.length) {
-            return 0;
+            return [];
         }
 
         const studentsBeginning = studentsPerAttempt[0];
-        const studentsMiddle = studentsPerAttempt[1];
-        const studentsFinal = studentsPerAttempt[studentsPerAttempt.length - 1];
+
+        if (studentsPerAttempt.length < 2) {
+            return studentsBeginning;
+        }
+
+        studentsMiddle = studentsPerAttempt[1];
+        studentsFinal = studentsPerAttempt[studentsPerAttempt.length - 1];
 
         const studentsActiveBeginning = studentsBeginning.filter(item1 =>
             studentsMiddle.some(item2 => item1.studentId === item2.studentId));
